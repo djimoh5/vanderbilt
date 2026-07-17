@@ -11,3 +11,4 @@ export * from '../../../model/tenant.model';
 export * from '../../../model/property.model';
 export * from '../../../model/chart-of-account.model';
 export * from '../../../model/trial-balance.model';
+export * from '../../../model/source-document.model';

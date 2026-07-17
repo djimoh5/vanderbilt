@@ -71,6 +71,33 @@ export class S3Service extends BaseService {
     });
     }
 
+    // unlike getUploadInfo, this presigns a PUT for the exact key the caller supplies, no random filename generation -
+    // needed where the key itself is meaningful (e.g. document version paths like {propertyId}/{period}/{docType}/v{n}.{ext})
+    getUploadInfoForKey(bucketName: string, directory: string, filename: string, fileType: string, isPublic: boolean): Promise<S3UploadInfo> {
+        const s3Params = {
+            Bucket: bucketName,
+            Key: `${directory}/${filename}`,
+            ContentType: fileType
+        };
+
+        if(isPublic) {
+            s3Params['ACL'] = 'public-read';
+        }
+
+        return new Promise(resolve => {
+            getSignedUrl(this.s3, new PutObjectCommand(s3Params)).then(data => {
+                resolve({
+                    signedRequest: data,
+                    url: `https://${bucketName}.s3.amazonaws.com/${directory}/${filename}`,
+                    filename: filename
+                });
+            }).catch(err => {
+                this.error(resolve, err as any, null, { name: 'getSignedUrl - putObject - exact key', statusCode: undefined, data: { bucketName, directory, filename, isPublic } });
+                return;
+            });
+        });
+    }
+
     upload(bucket: string, destinationKey: string, body: string, contentType: string, isPublic: boolean) {
         return new Promise<any>((resolve, reject) => {
             const params = {

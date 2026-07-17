@@ -8,6 +8,7 @@ import { ShellComponent } from './component/shell/shell.component';
 import { PropertyListComponent } from './component/property/property-list.component';
 import { CoaConfigComponent } from './component/coa/coa-config.component';
 import { TrialBalanceComponent } from './component/trial-balance/trial-balance.component';
+import { DocumentListComponent } from './component/document/document-list.component';
 import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
@@ -26,6 +27,7 @@ export const routes: Routes = [
             { path: 'properties', component: PropertyListComponent },
             { path: 'coa', component: CoaConfigComponent },
             { path: 'trial-balance', component: TrialBalanceComponent },
+            { path: 'documents', component: DocumentListComponent },
 
             //catch all
             { path: '**', component: HomeComponent }
