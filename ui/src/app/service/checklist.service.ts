@@ -30,4 +30,8 @@ export class ChecklistService extends BaseService {
     addComment(propertyId: string, period: string, itemKey: string, text: string): Promise<ApiResponse<ChecklistInstance>> {
         return this.post(`checklist/${propertyId}/${period}/item/${itemKey}/comment`, { text });
     }
+
+    assignItem(propertyId: string, period: string, itemKey: string): Promise<ApiResponse<ChecklistInstance>> {
+        return this.post(`checklist/${propertyId}/${period}/item/${itemKey}/assign`, {});
+    }
 }

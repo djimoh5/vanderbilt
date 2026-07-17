@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>
+    <mat-icon [class.warn-icon]="hasOutstandingItems">{{ hasOutstandingItems ? 'warning' : 'check_circle' }}</mat-icon>
+    Lock this period?
+</h2>
+
+<mat-dialog-content>
+    @if (!hasOutstandingItems) {
+        <p>No outstanding review items or checklist items. This period is ready to lock.</p>
+    } @else {
+        <p class="warning-text">
+            This period still has outstanding items. Locking is allowed anyway, but review what's left first:
+        </p>
+
+        @if (data.reviewItems.length > 0) {
+            <div class="outstanding-section">
+                <span class="section-label">Open review items ({{ data.reviewItems.length }})</span>
+                <mat-list dense>
+                    @for (entry of data.reviewItems; track entry.item.oid) {
+                        <mat-list-item>
+                            <span matListItemTitle>{{ entry.tbAccountNumber }}</span>
+                            <span matListItemLine class="variance">variance {{ entry.variance | currency }}</span>
+                        </mat-list-item>
+                    }
+                </mat-list>
+            </div>
+        }
+
+        @if (data.checklistItems.length > 0) {
+            <div class="outstanding-section">
+                <span class="section-label">Unanswered checklist items ({{ data.checklistItems.length }})</span>
+                <mat-list dense>
+                    @for (label of data.checklistItems; track label) {
+                        <mat-list-item>
+                            <span matListItemTitle>{{ label }}</span>
+                        </mat-list-item>
+                    }
+                </mat-list>
+            </div>
+        }
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button [color]="hasOutstandingItems ? 'warn' : 'primary'" (click)="confirm()">
+        <mat-icon>lock</mat-icon>
+        Lock Period
+    </button>
+</mat-dialog-actions>

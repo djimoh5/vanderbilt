@@ -1,6 +1,10 @@
+$sidenav-width-expanded: 240px;
+$sidenav-width-collapsed: 64px;
+
 :host {
-    display: block;
-    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .shell-toolbar {
@@ -11,7 +15,13 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+    flex: 0 0 auto;
+}
+
+.sidenav-toggle {
+    color: var(--mat-sys-outline);
+    flex-shrink: 0;
 }
 
 .brand {
@@ -208,36 +218,30 @@
     height: 18px;
 }
 
-.nav-links {
-    display: flex;
-    gap: 0.25rem;
-}
-
-.nav-link {
+.home-link {
     display: inline-flex;
     align-items: center;
-    height: 36px;
-    padding: 0 0.9rem;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     color: var(--mat-sys-outline);
     text-decoration: none;
+    flex-shrink: 0;
     transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.nav-link:hover {
+.home-link:hover {
     background: rgba(16, 24, 40, 0.05);
     color: var(--mat-sys-on-surface);
 }
 
-.active-link {
+.active-icon-link {
     background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
     color: var(--mat-sys-primary);
-    font-weight: 700;
 }
 
-.active-link:hover {
+.active-icon-link:hover {
     background: color-mix(in srgb, var(--mat-sys-primary) 16%, transparent);
 }
 
@@ -291,6 +295,106 @@
     font-size: 20px;
     width: 20px;
     height: 20px;
+}
+
+.shell-body {
+    flex: 1 1 auto;
+}
+
+.app-sidenav {
+    width: $sidenav-width-expanded;
+    background: #ffffff;
+    border-right: 1px solid var(--mat-sys-outline-variant);
+    overflow-x: hidden;
+    transition: width 0.2s ease;
+}
+
+.app-sidenav.collapsed {
+    width: $sidenav-width-collapsed;
+}
+
+// Angular Material only recomputes mat-sidenav-content's inline offset margin
+// when the drawer's `opened` input toggles. Since our sidenav stays permanently
+// opened and only animates width via the .collapsed class, that inline margin
+// never updates on its own — so we track the same state here and force it
+// with `!important` (which beats the plain inline style Material sets).
+mat-sidenav {
+    border-radius: 0;
+}
+
+mat-sidenav-content {
+    margin-left: $sidenav-width-expanded !important;
+    transition: margin-left 0.2s ease;
+}
+
+mat-sidenav-content.content-collapsed {
+    margin-left: $sidenav-width-collapsed !important;
+}
+
+.side-nav-item {
+    height: 48px;
+    padding: 0 20px;
+    text-decoration: none;
+    border-radius: 0;
+}
+
+mat-nav-list {
+    padding: 10px !important;
+}
+
+::ng-deep .side-nav-item .mdc-list-item__content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+::ng-deep .side-nav-item .mdc-list-item__primary-text {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+}
+
+.app-sidenav.collapsed .side-nav-item {
+    padding: 0;
+}
+
+::ng-deep .app-sidenav.collapsed .side-nav-item .mdc-list-item__primary-text {
+    justify-content: center;
+}
+
+.side-nav-icon,
+.side-nav-label {
+    color: var(--mat-sys-outline);
+}
+
+.side-nav-icon {
+    flex-shrink: 0;
+}
+
+.side-nav-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-sidenav.collapsed .side-nav-label {
+    display: none;
+}
+
+.active-nav-item {
+    background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+}
+
+.active-nav-item .side-nav-icon,
+.active-nav-item .side-nav-label {
+    color: var(--mat-sys-primary);
+}
+
+.active-nav-item .side-nav-label {
+    font-weight: 700;
 }
 
 .shell-content {

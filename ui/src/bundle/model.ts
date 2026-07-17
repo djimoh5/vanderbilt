@@ -19,3 +19,4 @@ export * from '../../../model/review-item.model';
 export * from '../../../model/extraction-accuracy.model';
 export * from '../../../model/checklist-template.model';
 export * from '../../../model/checklist-instance.model';
+export * from '../../../model/period.model';

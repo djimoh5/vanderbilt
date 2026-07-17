@@ -12,3 +12,4 @@ export { ExtractionService } from '../app/service/extraction.service';
 export { ReconciliationService } from '../app/service/reconciliation.service';
 export { ReviewService } from '../app/service/review.service';
 export { ChecklistService } from '../app/service/checklist.service';
+export { PeriodService, PeriodStatusSummary } from '../app/service/period.service';

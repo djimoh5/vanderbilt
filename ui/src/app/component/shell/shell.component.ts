@@ -5,11 +5,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { BaseComponent } from 'bundle/component';
 import { AppService, AuthService, WorkspaceService } from 'bundle/service';
 import { WorkspaceChangedEvent } from 'bundle/event';
 import { Months, Years, MonthOption } from 'bundle/utility';
+
+interface NavItem {
+    path: string;
+    label: string;
+    icon: string;
+}
 
 @Component({
     selector: 'app-shell',
@@ -20,7 +30,11 @@ import { Months, Years, MonthOption } from 'bundle/utility';
         MatToolbarModule,
         MatIconModule,
         MatMenuModule,
-        MatDividerModule
+        MatDividerModule,
+        MatSidenavModule,
+        MatListModule,
+        MatButtonModule,
+        MatTooltipModule
     ],
     templateUrl: './shell.component.html',
     styleUrl: './shell.component.scss'
@@ -28,6 +42,19 @@ import { Months, Years, MonthOption } from 'bundle/utility';
 export class ShellComponent extends BaseComponent implements OnInit {
     months: MonthOption[] = Months;
     years: number[] = Years;
+
+    sidenavExpanded = true;
+
+    navItems: NavItem[] = [
+        { path: '/properties', label: 'Properties', icon: 'apartment' },
+        { path: '/coa', label: 'Chart of Accounts', icon: 'account_tree' },
+        { path: '/trial-balance', label: 'Trial Balance', icon: 'account_balance' },
+        { path: '/documents', label: 'Documents', icon: 'description' },
+        { path: '/reconciliation', label: 'Reconciliation', icon: 'sync_alt' },
+        { path: '/checklist', label: 'Checklist', icon: 'playlist_add_check' },
+        { path: '/review', label: 'Review', icon: 'rate_review' },
+        { path: '/period', label: 'Period Close', icon: 'lock' }
+    ];
 
     selectedPropertyId = '';
     selectedMonth: number | null = null;
@@ -108,5 +135,9 @@ export class ShellComponent extends BaseComponent implements OnInit {
     logout() {
         this.authService.disconnect();
         this.appService.navigate({ path: 'login' });
+    }
+
+    toggleSidenav() {
+        this.sidenavExpanded = !this.sidenavExpanded;
     }
 }

@@ -15,6 +15,7 @@ import { ToleranceConfigComponent } from './component/settings/tolerance-config.
 import { ReviewInboxComponent } from './component/review/review-inbox.component';
 import { ReviewDetailComponent } from './component/review/review-detail.component';
 import { ChecklistComponent } from './component/checklist/checklist.component';
+import { PeriodCloseComponent } from './component/period/period-close.component';
 import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
@@ -40,6 +41,7 @@ export const routes: Routes = [
             { path: 'review', component: ReviewInboxComponent },
             { path: 'review/:id', component: ReviewDetailComponent },
             { path: 'checklist', component: ChecklistComponent },
+            { path: 'period', component: PeriodCloseComponent },
 
             //catch all
             { path: '**', component: HomeComponent }

@@ -1,0 +1,31 @@
+h2[mat-dialog-title] {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.warn-icon {
+    color: var(--swatch-red);
+}
+
+.warning-text {
+    color: var(--mat-sys-outline);
+}
+
+.outstanding-section {
+    margin-top: 0.75rem;
+}
+
+.section-label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--mat-sys-outline);
+    margin-bottom: 0.25rem;
+}
+
+.variance {
+    color: var(--swatch-red);
+}

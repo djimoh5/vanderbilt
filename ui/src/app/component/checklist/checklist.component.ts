@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DatePipe } from '@angular/common';
 
 import { BaseComponent, SaveStatusComponent } from 'bundle/component';
@@ -46,6 +47,7 @@ interface CategoryGroup {
         MatProgressSpinnerModule,
         MatProgressBarModule,
         MatSnackBarModule,
+        MatTooltipModule,
         SaveStatusComponent
     ],
     providers: [SaveStatusService],
@@ -61,6 +63,7 @@ export class ChecklistComponent extends BaseComponent implements OnInit {
 
     newCommentByKey: { [key: string]: string } = {};
     postingCommentKey: string | null = null;
+    assigningKey: string | null = null;
 
     readonly ChecklistItemStatus = ChecklistItemStatus;
 
@@ -161,6 +164,28 @@ export class ChecklistComponent extends BaseComponent implements OnInit {
 
     isOwnComment(authorId: string): boolean {
         return authorId === this.authService.currentUserId;
+    }
+
+    isAssignedToMe(assignedTo: string | undefined): boolean {
+        return assignedTo === this.authService.currentUserId;
+    }
+
+    async assignToMe(itemKey: string) {
+        const propertyId = this.workspaceService.currentPropertyId;
+        const period = this.workspaceService.currentPeriod;
+
+        this.assigningKey = itemKey;
+        const res = await this.checklistService.assignItem(propertyId, period, itemKey);
+        this.assigningKey = null;
+
+        if (res.success) {
+            this.instance = res.data;
+            this.snackBar.open('Assigned to you', 'close', { duration: 3000 });
+        } else {
+            this.snackBar.open(res.msg || 'Failed to assign item', 'close', { duration: 5000 });
+        }
+
+        this.cdr.detectChanges();
     }
 
     async updateStatus(itemKey: string, status: ChecklistItemStatus) {

@@ -50,6 +50,25 @@ h1 {
     flex: 1 1 auto;
 }
 
+.assignee-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--mat-sys-outline);
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.assignee-chip.assignee-me {
+    color: var(--swatch-blue);
+    font-weight: 600;
+}
+
 .side-by-side {
     display: grid;
     grid-template-columns: 1fr 1fr;

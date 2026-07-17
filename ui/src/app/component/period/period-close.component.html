@@ -1,0 +1,60 @@
+<div class="page">
+    <div class="page-header">
+        <h1>Period Close</h1>
+    </div>
+
+    @if (loading) {
+        <mat-spinner diameter="24"></mat-spinner>
+    } @else if (summary) {
+        <mat-card class="section-card">
+            <mat-card-content>
+                <div class="status-row">
+                    <mat-chip [class]="statusClass(summary.period.status)" class="status-chip">
+                        {{ statusLabel(summary.period.status) }}
+                    </mat-chip>
+
+                    @if (summary.period.status === PeriodStatus.Locked) {
+                        <span class="meta-item">locked {{ summary.period.lockedAt | date:'medium' }}</span>
+                    }
+
+                    <span class="spacer"></span>
+
+                    @if (summary.period.status === PeriodStatus.Open) {
+                        <button mat-stroked-button [disabled]="transitioning" (click)="moveToInReview()">
+                            <mat-icon>rate_review</mat-icon>
+                            Move to In Review
+                        </button>
+                    }
+
+                    @if (summary.period.status !== PeriodStatus.Locked) {
+                        <button mat-raised-button color="primary" [disabled]="transitioning" (click)="openLockConfirm()">
+                            @if (transitioning) {
+                                <mat-spinner diameter="18"></mat-spinner>
+                            } @else {
+                                <mat-icon>lock</mat-icon>
+                            }
+                            Lock Period
+                        </button>
+                    }
+                </div>
+
+                <div class="summary-tiles">
+                    <div class="tile" [class.tile-alert]="summary.openReviewItems > 0">
+                        <span class="tile-value">{{ summary.openReviewItems }}</span>
+                        <span class="tile-label">Open Review Items</span>
+                    </div>
+                    <div class="tile" [class.tile-alert]="summary.openChecklistItems > 0">
+                        <span class="tile-value">{{ summary.openChecklistItems }}</span>
+                        <span class="tile-label">Unanswered Checklist Items</span>
+                    </div>
+                </div>
+
+                @if (summary.period.status === PeriodStatus.Locked) {
+                    <p class="hint">This period is locked. Locking does not require outstanding items to be resolved first - it's a manual override, not an automatic gate.</p>
+                }
+            </mat-card-content>
+        </mat-card>
+    } @else if (workspaceService.currentPropertyId && workspaceService.currentPeriod) {
+        <p class="empty-state">Could not load period status.</p>
+    }
+</div>

@@ -20,6 +20,23 @@
             <span class="meta-item">{{ detail.item.period }}</span>
             <span class="dot">&middot;</span>
             <span class="meta-item">TB account {{ detail.reconciliation.tbAccountNumber }}</span>
+
+            @if (detail.item.assignedTo) {
+                <span class="assignee-chip" [class.assignee-me]="isAssignedToMe(detail.item.assignedTo)">
+                    <mat-icon>person</mat-icon>
+                    {{ isAssignedToMe(detail.item.assignedTo) ? 'Assigned to you' : 'Assigned' }}
+                </span>
+            } @else {
+                <button mat-stroked-button [disabled]="assigning" (click)="assignToMe()" matTooltip="Assign this review item to yourself">
+                    @if (assigning) {
+                        <mat-spinner diameter="16"></mat-spinner>
+                    } @else {
+                        <mat-icon>person_add</mat-icon>
+                    }
+                    Assign to me
+                </button>
+            }
+
             <span class="spacer"></span>
             <a mat-stroked-button [routerLink]="['/extraction', detail.reconciliation.sourceDocumentId]">
                 <mat-icon>description</mat-icon>

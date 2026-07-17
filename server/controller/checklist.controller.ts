@@ -59,4 +59,12 @@ export class ChecklistController extends BaseController {
         const data = await this.checklistService.addComment(UniqueId(req.params.propertyid), req.params.period, req.params.key, AuthId(req.session.user.oid), text);
         res.send(data);
     }
+
+    // self-assign only ("Assign to me") - no teammate picker/user-list endpoint exists yet to support
+    // assigning to someone else, so this keeps the assignment surface area to what's actually usable today
+    @Post(':propertyid/:period/item/:key/assign')
+    async assignItem(req: Request, res: Response) {
+        const data = await this.checklistService.assignItem(UniqueId(req.params.propertyid), req.params.period, req.params.key, AuthId(req.session.user.oid));
+        res.send(data);
+    }
 }

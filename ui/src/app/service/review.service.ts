@@ -26,4 +26,8 @@ export class ReviewService extends BaseService {
     resolve(id: string, decision: 'approved' | 'rejected'): Promise<ApiResponse<ReviewItem>> {
         return this.post(`review/${id}/resolve`, { decision });
     }
+
+    assign(id: string): Promise<ApiResponse<ReviewItem>> {
+        return this.post(`review/${id}/assign`, {});
+    }
 }

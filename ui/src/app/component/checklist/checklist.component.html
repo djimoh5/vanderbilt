@@ -43,6 +43,22 @@
                         <div class="item-row">
                             <div class="item-top">
                                 <span class="item-label">{{ row.label }}</span>
+
+                                @if (row.response.assignedTo) {
+                                    <span class="assignee-chip" [class.assignee-me]="isAssignedToMe(row.response.assignedTo)" matTooltip="Assigned">
+                                        <mat-icon>person</mat-icon>
+                                        {{ isAssignedToMe(row.response.assignedTo) ? 'You' : 'Assigned' }}
+                                    </span>
+                                } @else {
+                                    <button mat-icon-button class="assign-button" [disabled]="assigningKey === row.key" (click)="assignToMe(row.key)" matTooltip="Assign to me">
+                                        @if (assigningKey === row.key) {
+                                            <mat-spinner diameter="16"></mat-spinner>
+                                        } @else {
+                                            <mat-icon>person_add</mat-icon>
+                                        }
+                                    </button>
+                                }
+
                                 <mat-button-toggle-group class="status-toggle" [value]="row.response.status" (change)="updateStatus(row.key, $event.value)">
                                     <mat-button-toggle [value]="ChecklistItemStatus.Yes">Yes</mat-button-toggle>
                                     <mat-button-toggle [value]="ChecklistItemStatus.No">No</mat-button-toggle>

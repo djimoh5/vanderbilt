@@ -106,6 +106,31 @@ h1 {
     flex-shrink: 0;
 }
 
+.assign-button {
+    flex-shrink: 0;
+    color: var(--mat-sys-outline);
+}
+
+.assignee-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--mat-sys-outline);
+    flex-shrink: 0;
+
+    mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.assignee-chip.assignee-me {
+    color: var(--swatch-blue);
+    font-weight: 600;
+}
+
 .comment-thread {
     display: flex;
     flex-direction: column;

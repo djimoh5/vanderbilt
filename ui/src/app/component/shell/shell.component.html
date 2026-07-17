@@ -1,4 +1,8 @@
 <mat-toolbar class="shell-toolbar">
+    <button type="button" mat-icon-button class="sidenav-toggle" (click)="toggleSidenav()" aria-label="Toggle navigation" matTooltip="Toggle navigation">
+        <mat-icon>menu</mat-icon>
+    </button>
+
     <div class="brand">
         <div class="brand-mark">
             <mat-icon>hub</mat-icon>
@@ -66,16 +70,9 @@
         </div>
     }
 
-    <nav class="nav-links">
-        <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-        <a class="nav-link" routerLink="/properties" routerLinkActive="active-link">Properties</a>
-        <a class="nav-link" routerLink="/coa" routerLinkActive="active-link">Chart of Accounts</a>
-        <a class="nav-link" routerLink="/trial-balance" routerLinkActive="active-link">Trial Balance</a>
-        <a class="nav-link" routerLink="/documents" routerLinkActive="active-link">Documents</a>
-        <a class="nav-link" routerLink="/reconciliation" routerLinkActive="active-link">Reconciliation</a>
-        <a class="nav-link" routerLink="/checklist" routerLinkActive="active-link">Checklist</a>
-        <a class="nav-link" routerLink="/review" routerLinkActive="active-link">Review</a>
-    </nav>
+    <a class="home-link" routerLink="/" routerLinkActive="active-icon-link" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home" matTooltip="Home">
+        <mat-icon>home</mat-icon>
+    </a>
 
     <span class="spacer"></span>
 
@@ -96,6 +93,21 @@
     </mat-menu>
 </mat-toolbar>
 
-<main class="shell-content">
-    <router-outlet />
-</main>
+<mat-sidenav-container class="shell-body">
+    <mat-sidenav mode="side" opened class="app-sidenav" [class.collapsed]="!sidenavExpanded">
+        <mat-nav-list>
+            @for (item of navItems; track item.path) {
+                <a mat-list-item class="side-nav-item" [routerLink]="item.path" routerLinkActive="active-nav-item"
+                   [matTooltip]="sidenavExpanded ? '' : item.label" matTooltipPosition="right">
+                    <mat-icon class="side-nav-icon">{{ item.icon }}</mat-icon>
+                    <span class="side-nav-label">{{ item.label }}</span>
+                </a>
+            }
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content [class.content-collapsed]="!sidenavExpanded">
+        <main class="shell-content">
+            <router-outlet />
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

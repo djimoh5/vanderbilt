@@ -10,6 +10,7 @@ import { ReconciliationController } from '../controller/reconciliation.controlle
 import { TenantConfigController } from '../controller/tenant-config.controller';
 import { ReviewController } from '../controller/review.controller';
 import { ChecklistController } from '../controller/checklist.controller';
+import { PeriodController } from '../controller/period.controller';
 
 import { BaseRouter, RouteInfo } from './base.router';
 import {  Config } from '../config/config';
@@ -28,7 +29,8 @@ export class Router extends BaseRouter {
             { path: `${this.getBaseUrl()}/reconciliation`, controller: ReconciliationController },
             { path: `${this.getBaseUrl()}/tenant-config`, controller: TenantConfigController },
             { path: `${this.getBaseUrl()}/review`, controller: ReviewController },
-            { path: `${this.getBaseUrl()}/checklist`, controller: ChecklistController }
+            { path: `${this.getBaseUrl()}/checklist`, controller: ChecklistController },
+            { path: `${this.getBaseUrl()}/period`, controller: PeriodController }
         ];
 
         //static pages

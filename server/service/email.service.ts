@@ -38,13 +38,9 @@ export class EmailService extends BaseService {
     }
  
     async sendTemplate(template: EmailTemplate, userId: string, tags?: string[], metadata?: { [key: string]: any }): Promise<ApiResponse<any>> {
-        /*if(Config.ENVIRONMENT !== 'release') {
-            template.subject += this.getTestInfo(template.to, template.cc, template.bcc, platform, Config.ENVIRONMENT, template.doNotArchive);
+        if(Config.ENVIRONMENT !== 'release') {
+            template.subject += this.getTestInfo(template.to, template.cc, template.bcc, Config.ENVIRONMENT);
             template.to = Config.EMAIL.admin;
-
-            if (platform.email && platform.email.testing){
-                template.to.push(...platform.email.testing);
-            }
 
             if(template.cc && template.cc.length > 0) {
                 template.cc = [Config.EMAIL.admin[0]];
@@ -53,7 +49,7 @@ export class EmailService extends BaseService {
             if(template.bcc && template.bcc.length > 0) {
                 template.bcc = [Config.EMAIL.admin[0]];
             }
-        }*/
+        }
 
         if (template.signature) {
             template.content += template.signature;

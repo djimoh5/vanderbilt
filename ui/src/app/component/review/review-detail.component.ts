@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { BaseComponent } from 'bundle/component';
 import { AppService, ReviewService, AuthService } from 'bundle/service';
@@ -33,7 +34,8 @@ import { ReviewItemDetail, ReviewItemStatus } from 'bundle/model';
         MatFormFieldModule,
         MatInputModule,
         MatProgressSpinnerModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatTooltipModule
     ],
     templateUrl: './review-detail.component.html',
     styleUrl: './review-detail.component.scss'
@@ -47,6 +49,7 @@ export class ReviewDetailComponent extends BaseComponent implements OnInit {
     newComment = '';
     posting = false;
     resolving = false;
+    assigning = false;
 
     displayedColumns = ['name', 'value', 'confidence'];
 
@@ -79,6 +82,25 @@ export class ReviewDetailComponent extends BaseComponent implements OnInit {
 
     isOwnComment(authorId: string): boolean {
         return authorId === this.authService.currentUserId;
+    }
+
+    isAssignedToMe(assignedTo: string | undefined): boolean {
+        return assignedTo === this.authService.currentUserId;
+    }
+
+    async assignToMe() {
+        this.assigning = true;
+        const res = await this.reviewService.assign(this.reviewItemId);
+        this.assigning = false;
+
+        if (res.success) {
+            this.detail = { ...this.detail, item: res.data };
+            this.snackBar.open('Assigned to you', 'close', { duration: 3000 });
+        } else {
+            this.snackBar.open(res.msg || 'Failed to assign item', 'close', { duration: 5000 });
+        }
+
+        this.cdr.detectChanges();
     }
 
     async addComment() {

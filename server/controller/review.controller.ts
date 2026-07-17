@@ -37,6 +37,14 @@ export class ReviewController extends BaseController {
         res.send(data);
     }
 
+    // self-assign only ("Assign to me") - no teammate picker/user-list endpoint exists yet to support
+    // assigning to someone else, so this keeps the assignment surface area to what's actually usable today
+    @Post(':id/assign')
+    async assign(req: Request, res: Response) {
+        const data = await this.reviewService.assign(UniqueId(req.params.id), AuthId(req.session.user.oid));
+        res.send(data);
+    }
+
     @Post(':id/resolve')
     async resolve(req: Request, res: Response) {
         const { decision } = req.body;

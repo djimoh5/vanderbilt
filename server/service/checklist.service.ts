@@ -1,6 +1,7 @@
 import { Bootstrap, Injectable } from '../config/bootstrap';
 import { ChecklistTemplateRepository } from '../repository/checklist-template.repository';
 import { ChecklistInstanceRepository } from '../repository/checklist-instance.repository';
+import { NotificationService } from './notification.service';
 
 import { ApiResponse, ApiErrorResponse, BaseService } from './base.service';
 import { AppService } from './app.service';
@@ -16,7 +17,8 @@ export class ChecklistService extends BaseService {
     constructor(
         appService: AppService,
         private checklistTemplateRepository: ChecklistTemplateRepository,
-        private checklistInstanceRepository: ChecklistInstanceRepository
+        private checklistInstanceRepository: ChecklistInstanceRepository,
+        private notificationService: NotificationService
     ) {
         super(appService);
     }
@@ -70,6 +72,25 @@ export class ChecklistService extends BaseService {
 
         response.status = status;
         await this.checklistInstanceRepository.save(instance);
+        return new ApiResponse(true, instance);
+    }
+
+    async assignItem(propertyId: uniqueid, period: string, itemKey: string, assignedUserId: authid): Promise<ApiResponse<ChecklistInstance>> {
+        const instance = await this.checklistInstanceRepository.getByPropertyPeriod(propertyId, period);
+        if (!instance) {
+            return new ApiErrorResponse('checklist has not been started for this property/period yet');
+        }
+
+        const response = instance.responses.find(r => r.itemKey === itemKey);
+        if (!response) {
+            return new ApiErrorResponse('unknown checklist item');
+        }
+
+        response.assignedTo = assignedUserId;
+        await this.checklistInstanceRepository.save(instance);
+
+        await this.notificationService.notifyChecklistAssigned(instance.oid, itemKey, assignedUserId);
+
         return new ApiResponse(true, instance);
     }
 

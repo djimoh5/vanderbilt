@@ -102,6 +102,19 @@ export class ReviewService extends BaseService {
         return new ApiResponse(true, { item, propertyName: property?.name || 'Unknown property', reconciliation, extracted, tbLine });
     }
 
+    // no notification is fired here (unlike ChecklistService.assignItem) - Domain 9 only notifies on
+    // review items going *stale*, not on initial assignment, so StaleReviewJob is this action's sole consumer
+    async assign(reviewItemId: uniqueid, userId: authid): Promise<ApiResponse<ReviewItem>> {
+        const item = await this.reviewItemRepository.getById(reviewItemId);
+        if (!item) {
+            return new ApiErrorResponse('review item not found');
+        }
+
+        item.assignedTo = userId;
+        await this.reviewItemRepository.save(item);
+        return new ApiResponse(true, item);
+    }
+
     async addComment(reviewItemId: uniqueid, userId: authid, text: string): Promise<ApiResponse<ReviewItem>> {
         const item = await this.reviewItemRepository.getById(reviewItemId);
         if (!item) {

@@ -13,6 +13,7 @@ import { ExtractionService } from './extraction.service';
 import { ReconciliationService } from './reconciliation.service';
 import { ReviewService } from './review.service';
 import { ChecklistService } from './checklist.service';
+import { PeriodService } from './period.service';
 
 @NgModule({
     providers: [
@@ -29,7 +30,8 @@ import { ChecklistService } from './checklist.service';
         ExtractionService,
         ReconciliationService,
         ReviewService,
-        ChecklistService
+        ChecklistService,
+        PeriodService
     ]
 })
 export class ServiceModule {}
