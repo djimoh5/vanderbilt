@@ -1,0 +1,2 @@
+//THIS IS AN AUTO-GENERATED FILE DO NOT MODIFY OR CHECK-IN
+export const CoreVersion = '1.0';

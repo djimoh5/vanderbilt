@@ -1,0 +1,30 @@
+<div class="page">
+    <h1>Welcome back{{ username ? ',' : '' }}<span class="highlight">{{ username ? ' ' + username : '' }}</span></h1>
+    <p class="subtitle">Here's a quick jump to what you're working on.</p>
+
+    <div class="quick-links">
+        <a routerLink="/properties" class="quick-link-card">
+            <mat-card>
+                <mat-card-content>
+                    <span class="quick-link-icon swatch-blue">
+                        <mat-icon>apartment</mat-icon>
+                    </span>
+                    <span class="quick-link-title">Properties</span>
+                    <span class="quick-link-desc">Add properties and invite your team</span>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a routerLink="/coa" class="quick-link-card">
+            <mat-card>
+                <mat-card-content>
+                    <span class="quick-link-icon swatch-purple">
+                        <mat-icon>account_balance</mat-icon>
+                    </span>
+                    <span class="quick-link-title">Chart of Accounts</span>
+                    <span class="quick-link-desc">Configure accounts per property</span>
+                </mat-card-content>
+            </mat-card>
+        </a>
+    </div>
+</div>

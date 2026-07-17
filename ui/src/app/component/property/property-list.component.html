@@ -1,0 +1,118 @@
+<div class="page">
+    <h1>Properties</h1>
+
+    <mat-card class="section-card">
+        <mat-card-header>
+            <mat-card-title>Add a property</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form class="inline-form" (ngSubmit)="createProperty()" #propertyForm="ngForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>Property name</mat-label>
+                    <input matInput name="name" [(ngModel)]="newPropertyName" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Yardi code</mat-label>
+                    <input matInput name="yardiCode" [(ngModel)]="newPropertyYardiCode">
+                </mat-form-field>
+                <button mat-flat-button color="primary" type="submit" [disabled]="creatingProperty || !propertyForm.form.valid">
+                    @if (creatingProperty) {
+                        <mat-spinner diameter="20"></mat-spinner>
+                    } @else {
+                        <ng-container>
+                            <mat-icon>add</mat-icon>
+                            Add Property
+                        </ng-container>
+                    }
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="section-card">
+        <mat-card-header>
+            <mat-card-title>Your properties</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            @if (loading) {
+                <mat-spinner diameter="24"></mat-spinner>
+            } @else if (properties.length === 0) {
+                <p class="empty-state">No properties yet — add one above.</p>
+            } @else {
+                <ul class="property-list">
+                    @for (property of properties; track property.oid) {
+                        <li class="property-row">
+                            <span class="property-icon">
+                                <mat-icon>apartment</mat-icon>
+                            </span>
+                            <div class="property-info">
+                                <span class="property-name">{{ property.name }}</span>
+                                @if (property.yardiCode) {
+                                    <span class="property-code">{{ property.yardiCode }}</span>
+                                }
+                            </div>
+                            <span class="status-pill" [class.status-active]="property.status === 'active'" [class.status-inactive]="property.status !== 'active'">
+                                {{ property.status }}
+                            </span>
+                        </li>
+                    }
+                </ul>
+            }
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="section-card">
+        <mat-card-header>
+            <mat-card-title>Invite a teammate</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form class="inline-form" (ngSubmit)="inviteTeammate()" #inviteForm="ngForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" name="inviteUsername" [(ngModel)]="inviteUsername" required>
+                </mat-form-field>
+                <button mat-flat-button color="primary" type="submit" [disabled]="invitingTeammate || !inviteForm.form.valid">
+                    @if (invitingTeammate) {
+                        <mat-spinner diameter="20"></mat-spinner>
+                    } @else {
+                        <ng-container>
+                            <mat-icon>person_add</mat-icon>
+                            Send Invite
+                        </ng-container>
+                    }
+                </button>
+            </form>
+
+            @if (lastInvitedOid) {
+                <div class="assign-role">
+                    <p class="assign-role-label">Invite sent. Assign them a role on a property:</p>
+                    <form class="inline-form" (ngSubmit)="submitAssignRole()" #roleForm="ngForm">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Property</mat-label>
+                            <mat-select name="assignPropertyId" [(ngModel)]="assignPropertyId" required>
+                                @for (property of properties; track property.oid) {
+                                    <mat-option [value]="property.oid">{{ property.name }}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Role</mat-label>
+                            <mat-select name="assignRole" [(ngModel)]="assignRole" required>
+                                @for (role of roleTypes; track role) {
+                                    <mat-option [value]="role">{{ role }}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <button mat-flat-button color="primary" type="submit" [disabled]="assigningRole || !roleForm.form.valid">
+                            @if (assigningRole) {
+                                <mat-spinner diameter="20"></mat-spinner>
+                            } @else {
+                                Assign Role
+                            }
+                        </button>
+                    </form>
+                </div>
+            }
+        </mat-card-content>
+    </mat-card>
+</div>

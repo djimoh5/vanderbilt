@@ -1,0 +1,8 @@
+server/config/secure.config.json
+server/config/app_secret_private.pem
+server/config/app_secret_public.pem
+node_modules/
+deploy/build-versions/
+build/
+dist/
+test/screenshots/

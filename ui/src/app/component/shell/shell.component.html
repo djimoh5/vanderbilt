@@ -1,0 +1,32 @@
+<mat-toolbar class="shell-toolbar">
+    <div class="brand">
+        <div class="brand-mark">
+            <mat-icon>hub</mat-icon>
+        </div>
+        <span class="brand-name">Vanderbilt</span>
+    </div>
+
+    <nav class="nav-links">
+        <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a class="nav-link" routerLink="/properties" routerLinkActive="active-link">Properties</a>
+        <a class="nav-link" routerLink="/coa" routerLinkActive="active-link">Chart of Accounts</a>
+    </nav>
+
+    <span class="spacer"></span>
+
+    <button class="user-menu-trigger" [matMenuTriggerFor]="userMenu">
+        <span class="avatar">{{ initials }}</span>
+        <span class="username">{{ username }}</span>
+        <mat-icon class="chevron">expand_more</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Log out</span>
+        </button>
+    </mat-menu>
+</mat-toolbar>
+
+<main class="shell-content">
+    <router-outlet />
+</main>

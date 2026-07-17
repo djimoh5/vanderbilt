@@ -1,0 +1,46 @@
+service: service-name
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: sprint
+  region: us-east-1
+  profile: veillance
+
+package:
+   patterns:
+      - ./config/app_secret_public.pem
+      - ./config/app_secret_private.pem
+   exclude:
+      - ./loader/node_modules/**
+      - ./lib/node_modules/**
+      - ./jobs/node_modules/**
+
+functions:
+  api:
+    handler: lambda/monolith.handler
+    #events:
+    #  - http:
+    #      method: ANY
+    #      path: /{proxy+}
+    #      cors:
+    #        origin: '*'
+    #        headers:
+    #          - Content-Type
+    #          - X-Amz-Date
+    #          - Authorization
+    #          - X-Api-Key
+    #          - X-Amz-Security-Token
+    #          - X-Amz-User-Agent
+    #          - X-Amzn-Trace-Id
+    #          - WB-Authorization
+    #          - Referral-Source
+    #          - api-ec256k1
+    #          - Client-ID
+    #          - cache-version
+    #          - user-agent
+    #          - Retry-After
+    #          - wb-limiter
+    #          - token

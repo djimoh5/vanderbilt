@@ -1,0 +1,1 @@
+export { BaseComponent } from '../app/component/base.component';

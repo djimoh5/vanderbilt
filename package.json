@@ -1,0 +1,19 @@
+{
+  "name": "cortex",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "build": "npm run lint && tsc --noEmit -p tsconfig.json",
+    "debug": "node --inspect -r ts-node/register server/app"
+  },
+  "dependencies": {
+    "core-js": "^2.5.4",
+    "rxjs": "^5.5.2",
+    "uuid": "^3.4.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14"
+  }
+}

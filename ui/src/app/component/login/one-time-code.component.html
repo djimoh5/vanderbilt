@@ -1,0 +1,63 @@
+<div class="auth-page">
+    <mat-card class="auth-card">
+        <div class="auth-badge">
+            <mat-icon>hub</mat-icon>
+        </div>
+        <h1 class="auth-heading">Log in with a code</h1>
+        <p class="auth-subtitle">
+            {{ step === 1 ? 'Enter your email and we\'ll send you a one-time login code' : 'Enter the code we sent to ' + username }}
+        </p>
+
+        @if (infoMessage && step === 2) {
+            <div class="info-banner">
+                <mat-icon>mark_email_read</mat-icon>
+                <span>{{ infoMessage }}</span>
+            </div>
+        }
+
+        @if (step === 1) {
+            <form (ngSubmit)="requestCode()" #codeForm="ngForm">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <mat-icon matPrefix>person</mat-icon>
+                    <input matInput type="email" name="username" [(ngModel)]="username" required autocomplete="username">
+                </mat-form-field>
+
+                <button mat-flat-button color="primary" class="full-width submit-button" type="submit" [disabled]="submitting || !codeForm.form.valid">
+                    @if (submitting) {
+                        <mat-spinner diameter="20"></mat-spinner>
+                    } @else {
+                        Send code
+                    }
+                </button>
+            </form>
+        } @else {
+            <form (ngSubmit)="verifyCode()" #verifyForm="ngForm">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Verification code</mat-label>
+                    <mat-icon matPrefix>pin</mat-icon>
+                    <input matInput type="text" name="code" [(ngModel)]="code" required autocomplete="one-time-code">
+                </mat-form-field>
+
+                @if (error) {
+                    <div class="error-banner">
+                        <mat-icon>error_outline</mat-icon>
+                        <span>{{ error }}</span>
+                    </div>
+                }
+
+                <button mat-flat-button color="primary" class="full-width submit-button" type="submit" [disabled]="submitting || !verifyForm.form.valid">
+                    @if (submitting) {
+                        <mat-spinner diameter="20"></mat-spinner>
+                    } @else {
+                        Verify &amp; log in
+                    }
+                </button>
+            </form>
+        }
+
+        <div class="toggle-mode">
+            <a routerLink="/login" mat-button color="primary">Back to login</a>
+        </div>
+    </mat-card>
+</div>

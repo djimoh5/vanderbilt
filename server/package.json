@@ -1,0 +1,53 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "core-js": "^2.5.4",
+    "cors": "^2.8.4",
+    "express": "^4.17.3",
+    "form-data": "^2.3.3",
+    "http-auth": ">= 0.0.1",
+    "injection-js": "^2.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "mandrill-api": ">= 0.0.1",
+    "mongodb": "^4.9.0",
+    "reflect-metadata": "^0.1.13",
+    "request": "^2.83.0",
+    "rxjs": "^5.5.2",
+    "serverless-http": "^3.1.1",
+    "socket.io": "^1.5.0",
+    "speakeasy": "^2.0.0",
+    "tslib": "^1.11.1",
+    "ua-parser-js": "^1.0.35",
+    "underscore": "^1.13.2",
+    "uuid": "^3.4.0"
+  },
+  "optionalDependencies": {
+    "@aws-sdk/client-acm": "^3.600.0",
+    "@aws-sdk/client-api-gateway": "^3.600.0",
+    "@aws-sdk/client-bedrock": "^3.600.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.602.0",
+    "@aws-sdk/client-cloudfront": "^3.600.0",
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/client-secrets-manager": "^3.600.0",
+    "@aws-sdk/s3-request-presigner": "^3.600.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^8.57.0",
+    "@playwright/test": "^1.59.1",
+    "@types/eslint": "^8.56.10",
+    "@types/express": "^4.17.3",
+    "@types/node": "^20.12.2",
+    "@types/request": "^2.48.8",
+    "@types/socket.io": "^1.4.31",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/ua-parser-js": "^0.7.36",
+    "eslint": "^8.57.0",
+    "playwright": "^1.59.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.1"
+  }
+}

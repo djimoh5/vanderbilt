@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/*.pem)",
+      "Read(**/secure.*.json)"
+    ]
+  },
+  "plansDirectory": ".claude/plans"
+}

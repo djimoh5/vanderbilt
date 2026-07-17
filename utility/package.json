@@ -1,0 +1,9 @@
+{
+  "type": "commonjs",
+  "name": "api-server",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "uuid": "^3.4.0"
+  }
+}

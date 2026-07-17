@@ -1,0 +1,115 @@
+@use '@angular/material' as mat;
+
+html {
+    @include mat.theme((
+        color: (
+            theme-type: light,
+            primary: mat.$azure-palette,
+            tertiary: mat.$violet-palette,
+        ),
+        typography: Roboto,
+        density: 0,
+    ));
+
+    height: 100%;
+}
+
+:root {
+    --brand-gradient: linear-gradient(135deg, #1e1b4b 0%, #4338ca 55%, #7c3aed 100%);
+    --brand-gradient-hover: linear-gradient(135deg, #26224f 0%, #4c40d6 55%, #8b4bf5 100%);
+    --page-bg: linear-gradient(180deg, #f7f7fc 0%, #eef0fa 100%);
+
+    --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.05);
+    --shadow-md: 0 4px 10px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.05);
+    --shadow-lg: 0 12px 28px rgba(16, 24, 40, 0.14), 0 4px 10px rgba(16, 24, 40, 0.06);
+
+    --radius-xl: 24px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+
+    --border-subtle: rgba(16, 24, 40, 0.08);
+
+    // monday.com-inspired status/category palette
+    --swatch-blue: #0073ea;
+    --swatch-green: #00c875;
+    --swatch-orange: #fdab3d;
+    --swatch-red: #e2445c;
+    --swatch-purple: #a25ddc;
+    --swatch-yellow: #ffcb00;
+    --swatch-teal: #0086c0;
+    --swatch-pink: #ff5ac4;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: var(--page-bg);
+    background-attachment: fixed;
+    color: var(--mat-sys-on-surface);
+    -webkit-font-smoothing: antialiased;
+}
+
+// ---- App-wide Material skin ----
+// Softer, more generous corners and shadows than Material's stock defaults.
+
+.mat-mdc-card {
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.mat-mdc-card-title {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em;
+}
+
+.mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button {
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em;
+}
+
+.mat-mdc-unelevated-button.mat-primary,
+.mat-mdc-raised-button.mat-primary {
+    --mdc-filled-button-container-color: transparent;
+    --mdc-protected-button-container-color: transparent;
+    background: var(--brand-gradient) !important;
+    color: #fff !important;
+    box-shadow: var(--shadow-md) !important;
+    transition: box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
+}
+
+.mat-mdc-unelevated-button.mat-primary:hover:not(:disabled),
+.mat-mdc-raised-button.mat-primary:hover:not(:disabled) {
+    filter: brightness(1.06);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.mat-mdc-unelevated-button.mat-primary:disabled,
+.mat-mdc-raised-button.mat-primary:disabled {
+    background: #e2e2ea !important;
+    color: #9b9ba8 !important;
+    box-shadow: none !important;
+}
+
+.mat-mdc-form-field .mdc-notched-outline__leading {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
+}
+
+.mat-mdc-form-field .mdc-notched-outline__trailing {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+}
+
+.mat-mdc-menu-panel {
+    border-radius: var(--radius-md) !important;
+}
+
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    border-radius: var(--radius-md) !important;
+}

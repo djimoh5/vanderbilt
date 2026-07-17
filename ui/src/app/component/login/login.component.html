@@ -1,0 +1,59 @@
+<div class="auth-page">
+    <mat-card class="auth-card">
+        <div class="auth-badge">
+            <mat-icon>hub</mat-icon>
+        </div>
+        <h1 class="auth-heading">{{ mode === 'login' ? 'Log in' : 'Create your account' }}</h1>
+        <p class="auth-subtitle">{{ mode === 'login' ? 'Welcome back — enter your details below' : 'Set up a new account to get started' }}</p>
+
+        @if (infoMessage) {
+            <div class="info-banner">
+                <mat-icon>check_circle</mat-icon>
+                <span>{{ infoMessage }}</span>
+            </div>
+        }
+
+        <form (ngSubmit)="submit()" #loginForm="ngForm">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input matInput type="email" name="username" [(ngModel)]="username" required autocomplete="username">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Password</mat-label>
+                <mat-icon matPrefix>lock</mat-icon>
+                <input matInput type="password" name="password" [(ngModel)]="password" required autocomplete="current-password">
+            </mat-form-field>
+
+            @if (error) {
+                <div class="error-banner">
+                    <mat-icon>error_outline</mat-icon>
+                    <span>{{ error }}</span>
+                </div>
+            }
+
+            <button mat-flat-button color="primary" class="full-width submit-button" type="submit" [disabled]="submitting || !loginForm.form.valid">
+                @if (submitting) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                    {{ mode === 'login' ? 'Log in' : 'Sign up' }}
+                }
+            </button>
+        </form>
+
+        @if (mode === 'login') {
+            <div class="secondary-links">
+                <a routerLink="/login/code" mat-button>Log in with an emailed code</a>
+                <a routerLink="/password/reset" mat-button>Forgot password?</a>
+            </div>
+        }
+
+        <div class="toggle-mode">
+            <span>{{ mode === 'login' ? "Don't have an account?" : 'Already have an account?' }}</span>
+            <button mat-button color="primary" type="button" (click)="toggleMode()">
+                {{ mode === 'login' ? 'Create account' : 'Back to login' }}
+            </button>
+        </div>
+    </mat-card>
+</div>

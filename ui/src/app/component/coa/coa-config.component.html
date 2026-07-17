@@ -1,0 +1,53 @@
+<div class="page">
+    <h1>Chart of Accounts</h1>
+
+    <mat-card class="section-card">
+        <mat-card-content>
+            @if (loadingProperties) {
+                <mat-spinner diameter="24"></mat-spinner>
+            } @else if (properties.length === 0) {
+                <p class="empty-state">Add a property first to configure its Chart of Accounts.</p>
+            } @else {
+                <mat-form-field appearance="outline" class="property-select">
+                    <mat-label>Property</mat-label>
+                    <mat-select [(ngModel)]="selectedPropertyId" (selectionChange)="onPropertyChange()">
+                        @for (property of properties; track property.oid) {
+                            <mat-option [value]="property.oid">{{ property.name }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                @if (loadingAccounts) {
+                    <mat-spinner diameter="24"></mat-spinner>
+                } @else {
+                    <mat-accordion multi class="category-accordion">
+                        @for (group of accountsByCategory; track group.category; let i = $index) {
+                            <mat-expansion-panel class="category-panel" [class]="'swatch-' + (i % 6)">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <span class="category-dot"></span>
+                                        {{ group.category }}
+                                    </mat-panel-title>
+                                    <mat-panel-description>{{ group.accounts.length }} accounts</mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                @for (account of group.accounts; track account.oid) {
+                                    <div class="account-row">
+                                        <div class="account-info">
+                                            <span class="account-number">{{ account.accountNumber }}</span>
+                                            <span class="account-name">{{ account.name }}</span>
+                                        </div>
+                                        <mat-slide-toggle
+                                            [checked]="isActive(account.oid!)"
+                                            (change)="toggleAccount(account, $event.checked)">
+                                        </mat-slide-toggle>
+                                    </div>
+                                }
+                            </mat-expansion-panel>
+                        }
+                    </mat-accordion>
+                }
+            }
+        </mat-card-content>
+    </mat-card>
+</div>

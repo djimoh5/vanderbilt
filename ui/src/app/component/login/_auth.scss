@@ -1,0 +1,123 @@
+// Shared visual language for the login / one-time-code / forgot-password screens.
+:host {
+    display: block;
+    height: 100%;
+}
+
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 100vh;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem 2.25rem 2rem !important;
+    border-radius: var(--radius-xl) !important;
+    box-shadow: var(--shadow-lg) !important;
+    border: none !important;
+}
+
+.auth-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: var(--brand-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    box-shadow: var(--shadow-md);
+}
+
+.auth-badge mat-icon {
+    color: #fff;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+}
+
+.auth-heading {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--mat-sys-outline);
+    font-size: 0.925rem;
+    margin: 0 0 1.75rem;
+    line-height: 1.4;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.submit-button {
+    height: 48px;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.error-banner,
+.info-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.85rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.error-banner {
+    color: #b3273f;
+    background: color-mix(in srgb, var(--swatch-red) 12%, transparent);
+}
+
+.error-banner mat-icon {
+    color: var(--swatch-red);
+}
+
+.info-banner {
+    color: #0f5fb0;
+    background: color-mix(in srgb, var(--swatch-blue) 10%, transparent);
+}
+
+.info-banner mat-icon {
+    color: var(--swatch-blue);
+}
+
+.secondary-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    margin-top: 0.75rem;
+}
+
+.secondary-links a {
+    color: var(--mat-sys-primary);
+    font-size: 0.875rem;
+}
+
+.toggle-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.875rem;
+    color: var(--mat-sys-outline);
+}

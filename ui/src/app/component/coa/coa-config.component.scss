@@ -1,0 +1,93 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.section-card {
+    padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.property-select {
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state {
+    color: var(--mat-sys-outline);
+    margin: 0;
+}
+
+.category-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.category-panel {
+    border-radius: var(--radius-md) !important;
+    box-shadow: none !important;
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--cat-color, var(--swatch-blue));
+    overflow: hidden;
+
+    &.swatch-0 { --cat-color: var(--swatch-blue); }
+    &.swatch-1 { --cat-color: var(--swatch-purple); }
+    &.swatch-2 { --cat-color: var(--swatch-orange); }
+    &.swatch-3 { --cat-color: var(--swatch-teal); }
+    &.swatch-4 { --cat-color: var(--swatch-pink); }
+    &.swatch-5 { --cat-color: var(--swatch-green); }
+}
+
+.category-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cat-color, var(--swatch-blue));
+    margin-right: 0.6rem;
+}
+
+::ng-deep .category-panel .mat-expansion-panel-header-title {
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.account-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.account-row:last-child {
+    border-bottom: none;
+}
+
+.account-info {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+}
+
+.account-number {
+    color: var(--mat-sys-outline);
+    font-variant-numeric: tabular-nums;
+    min-width: 3.5rem;
+    font-size: 0.875rem;
+}
+
+.account-name {
+    font-weight: 500;
+    font-size: 0.925rem;
+}

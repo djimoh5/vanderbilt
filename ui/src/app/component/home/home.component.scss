@@ -1,0 +1,87 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.highlight {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    margin: 0.25rem 0 2rem;
+    color: var(--mat-sys-outline);
+}
+
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    max-width: 640px;
+}
+
+.quick-link-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.quick-link-card mat-card {
+    height: 100%;
+    box-sizing: border-box;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    cursor: pointer;
+}
+
+.quick-link-card:hover mat-card {
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-2px);
+}
+
+.quick-link-card mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.5rem !important;
+}
+
+.quick-link-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+}
+
+.quick-link-icon.swatch-blue {
+    background: color-mix(in srgb, var(--swatch-blue) 14%, transparent);
+    color: var(--swatch-blue);
+}
+
+.quick-link-icon.swatch-purple {
+    background: color-mix(in srgb, var(--swatch-purple) 14%, transparent);
+    color: var(--swatch-purple);
+}
+
+.quick-link-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.quick-link-desc {
+    font-size: 0.85rem;
+    color: var(--mat-sys-outline);
+}
