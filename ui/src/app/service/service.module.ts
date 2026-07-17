@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { DocumentService } from './document.service';
 import { PropertyService } from './property.service';
 import { CoaService } from './coa.service';
+import { TrialBalanceService } from './trial-balance.service';
 
 @NgModule({
     providers: [
@@ -17,7 +18,8 @@ import { CoaService } from './coa.service';
         AuthService,
         DocumentService,
         PropertyService,
-        CoaService
+        CoaService,
+        TrialBalanceService
     ]
 })
 export class ServiceModule {}

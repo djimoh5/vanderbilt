@@ -53,7 +53,7 @@ export class BaseConfig {
     static AWS_LAMBDA_ACCESS_SECRET = '';
 
     static S3_BUCKET = {
-        DOCUMENTS: ''
+        CONTEXT: 'vanderbilt-context'
     }
 
     static SERVERLESS = false;

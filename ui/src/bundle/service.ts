@@ -5,3 +5,5 @@ export { AuthService } from '../app/service/auth.service';
 export { PropertyService } from '../app/service/property.service';
 export { CoaService } from '../app/service/coa.service';
 export { SaveStatusService, SaveState } from '../app/service/save-status.service';
+export { DocumentService } from '../app/service/document.service';
+export { TrialBalanceService } from '../app/service/trial-balance.service';

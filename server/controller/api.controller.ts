@@ -161,7 +161,7 @@ export class APIController extends BaseController {
 
 	@Get('upload/info')
 	async getUploadInfo(req: Request, res: Response) {
-		const result = this.s3Service.getUploadInfo(Config.S3_BUCKET.DOCUMENTS, '', req.query.filename, req.query.fileType, req.query.isPublic === 'true');
+		const result = await this.s3Service.getUploadInfo(Config.S3_BUCKET.CONTEXT, 'documents', req.query.filename, req.query.fileType, req.query.isPublic === 'true');
 		this.sendSuccess(res, result);
 	}
 }

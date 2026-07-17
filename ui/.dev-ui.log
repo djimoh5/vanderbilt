@@ -1,0 +1,76 @@
+❯ Building...
+✔ Building...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 280.65 kB | 
+scripts.js          | scripts       |  11.40 kB | 
+styles.css          | styles        |  10.56 kB | 
+
+                    | Initial total | 302.61 kB
+
+Application bundle generation complete. [5.115 seconds] - 2026-07-17T16:11:09.605Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+[2m11:11:09 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4300[22m/[39m
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 281.38 kB | 
+
+Application bundle generation complete. [3.314 seconds] - 2026-07-17T16:40:43.892Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 284.59 kB | 
+
+Application bundle generation complete. [1.071 seconds] - 2026-07-17T16:40:52.161Z
+
+Component update sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.571 seconds] - 2026-07-17T16:40:59.510Z
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG1010: 'imports' must be an array of components, directives, pipes, or NgModules.
+  Value could not be determined statically.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/component/trial-balance/trial-balance.component.ts:28:8:
+[37m      28 │         [32mMatInputModule[37m,
+         ╵         [32m~~~~~~~~~~~~~~[0m
+
+  Unknown reference.
+
+    src/app/component/trial-balance/trial-balance.component.ts:28:8:
+[37m      28 │         [32mMatInputModule[37m,
+         ╵         [32m~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2552: Cannot find name 'MatInputModule'. Did you mean 'MatIconModule'?[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/component/trial-balance/trial-balance.component.ts:28:8:
+[37m      28 │         [32mMatInputModule[37m,
+         ╵         [32m~~~~~~~~~~~~~~[0m
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 284.26 kB | 
+scripts.js          | scripts       |  11.40 kB | 
+styles.css          | styles        |  10.56 kB | 
+
+                    | Initial total | 306.22 kB
+
+Application bundle generation complete. [0.969 seconds] - 2026-07-17T16:41:08.344Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 284.39 kB | 
+
+Application bundle generation complete. [1.068 seconds] - 2026-07-17T16:41:19.235Z
+
+Component update sent to client(s).

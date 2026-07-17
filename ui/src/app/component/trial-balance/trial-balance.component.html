@@ -1,0 +1,99 @@
+<div class="page">
+    <div class="page-header">
+        <h1>Trial Balance</h1>
+    </div>
+
+    <mat-card class="section-card">
+        <mat-card-content>
+            @if (properties.length === 0) {
+                <p class="empty-state">Add a property first to import its Trial Balance.</p>
+            } @else {
+                <div class="selectors">
+                    <mat-form-field appearance="outline" class="property-select">
+                        <mat-label>Property</mat-label>
+                        <mat-select [(ngModel)]="selectedPropertyId" (selectionChange)="onSelectionChange()">
+                            @for (property of properties; track property.oid) {
+                                <mat-option [value]="property.oid">{{ property.name }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="month-select">
+                        <mat-label>Month</mat-label>
+                        <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onSelectionChange()">
+                            @for (month of months; track month.value) {
+                                <mat-option [value]="month.value">{{ month.label }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="year-select">
+                        <mat-label>Year</mat-label>
+                        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onSelectionChange()">
+                            @for (year of years; track year) {
+                                <mat-option [value]="year">{{ year }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="upload-row">
+                    <input #fileInput type="file" accept=".xlsx,.xls" hidden (change)="onFileSelected($event)">
+                    <button mat-stroked-button (click)="fileInput.click()">
+                        <mat-icon>attach_file</mat-icon>
+                        Choose file
+                    </button>
+
+                    @if (selectedFile) {
+                        <mat-chip>{{ selectedFile.name }}</mat-chip>
+                    }
+
+                    <button mat-raised-button color="primary" [disabled]="!selectedFile || !period || uploading" (click)="upload()">
+                        @if (uploading) {
+                            <mat-spinner diameter="18"></mat-spinner>
+                        } @else {
+                            <mat-icon>upload</mat-icon>
+                        }
+                        Import
+                    </button>
+                </div>
+            }
+        </mat-card-content>
+    </mat-card>
+
+    @if (loadingSnapshot) {
+        <mat-spinner diameter="24"></mat-spinner>
+    } @else if (snapshot) {
+        <mat-card class="section-card">
+            <mat-card-content>
+                <div class="snapshot-meta">
+                    <span>{{ snapshot.accounts.length }} accounts</span>
+                    <span class="dot">&middot;</span>
+                    <span>imported {{ snapshot.importedAt | date:'medium' }}</span>
+                </div>
+
+                <table mat-table [dataSource]="sortedAccounts" matSort (matSortChange)="sortAccounts($event)" class="account-table">
+                    <ng-container matColumnDef="accountNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Account #</th>
+                        <td mat-cell *matCellDef="let account">{{ account.accountNumber }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accountName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Account Name</th>
+                        <td mat-cell *matCellDef="let account">{{ account.accountName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="balance">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="balance-header">Balance</th>
+                        <td mat-cell *matCellDef="let account" class="balance-cell">{{ account.balance | currency }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    } @else if (selectedPropertyId && period) {
+        <p class="empty-state">No Trial Balance imported yet for this property and period.</p>
+    }
+</div>

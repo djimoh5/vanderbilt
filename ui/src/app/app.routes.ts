@@ -7,6 +7,7 @@ import { ForgotPasswordComponent } from './component/login/forgot-password.compo
 import { ShellComponent } from './component/shell/shell.component';
 import { PropertyListComponent } from './component/property/property-list.component';
 import { CoaConfigComponent } from './component/coa/coa-config.component';
+import { TrialBalanceComponent } from './component/trial-balance/trial-balance.component';
 import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
@@ -24,6 +25,7 @@ export const routes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'properties', component: PropertyListComponent },
             { path: 'coa', component: CoaConfigComponent },
+            { path: 'trial-balance', component: TrialBalanceComponent },
 
             //catch all
             { path: '**', component: HomeComponent }
