@@ -10,8 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { BaseComponent } from 'bundle/component';
-import { AppService, PropertyService, CoaService } from 'bundle/service';
+import { BaseComponent, SaveStatusComponent } from 'bundle/component';
+import { AppService, PropertyService, CoaService, SaveStatusService } from 'bundle/service';
 import { Property, ChartOfAccount } from 'bundle/model';
 import { Common } from 'bundle/utility';
 
@@ -26,8 +26,10 @@ import { Common } from 'bundle/utility';
         MatSlideToggleModule,
         MatIconModule,
         MatProgressSpinnerModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        SaveStatusComponent
     ],
+    providers: [SaveStatusService],
     templateUrl: './coa-config.component.html',
     styleUrl: './coa-config.component.scss'
 })
@@ -42,7 +44,7 @@ export class CoaConfigComponent extends BaseComponent implements OnInit {
     loadingProperties = false;
     loadingAccounts = false;
 
-    constructor(appService: AppService, private propertyService: PropertyService, private coaService: CoaService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {
+    constructor(appService: AppService, private propertyService: PropertyService, private coaService: CoaService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef, public saveStatus: SaveStatusService) {
         super(appService);
     }
 
@@ -93,6 +95,7 @@ export class CoaConfigComponent extends BaseComponent implements OnInit {
     }
 
     async toggleAccount(account: ChartOfAccount, active: boolean) {
+        this.saveStatus.start();
         const res = await this.coaService.setActivation(this.selectedPropertyId, account.oid as string, active);
 
         if (res.success) {
@@ -101,7 +104,9 @@ export class CoaConfigComponent extends BaseComponent implements OnInit {
             } else {
                 this.activeAccountIds.delete(account.oid as string);
             }
+            this.saveStatus.success();
         } else {
+            this.saveStatus.fail();
             this.snackBar.open(res.msg || 'Failed to update activation', 'close', { duration: 5000 });
         }
 

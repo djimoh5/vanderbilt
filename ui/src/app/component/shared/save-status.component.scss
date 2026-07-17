@@ -1,0 +1,50 @@
+:host {
+    display: inline-flex;
+}
+
+.save-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    animation: fade-in 0.15s ease;
+}
+
+.save-status mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.saving {
+    background: color-mix(in srgb, var(--swatch-blue) 12%, transparent);
+    color: #0f5fb0;
+}
+
+.saving ::ng-deep circle {
+    stroke: #0f5fb0;
+}
+
+.saved {
+    background: color-mix(in srgb, var(--swatch-green) 16%, transparent);
+    color: #027a4d;
+}
+
+.error {
+    background: color-mix(in srgb, var(--swatch-red) 14%, transparent);
+    color: #b3273f;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

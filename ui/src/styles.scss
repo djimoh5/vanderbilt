@@ -75,6 +75,22 @@ body {
     letter-spacing: 0.01em;
 }
 
+// Angular Material projects a button's content into a single .mdc-button__label span.
+// Flexing that (instead of relying on default inline flow + per-icon margins) gives every
+// icon+text button in the app consistent vertical centering and spacing in one place.
+.mdc-button__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mdc-button .mat-icon {
+    margin: 0;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
 .mat-mdc-unelevated-button.mat-primary,
 .mat-mdc-raised-button.mat-primary {
     --mdc-filled-button-container-color: transparent;

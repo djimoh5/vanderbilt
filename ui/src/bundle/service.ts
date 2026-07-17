@@ -4,3 +4,4 @@ export { RouterService, RouteInfo, RouteParamsCallback } from '../app/service/ro
 export { AuthService } from '../app/service/auth.service';
 export { PropertyService } from '../app/service/property.service';
 export { CoaService } from '../app/service/coa.service';
+export { SaveStatusService, SaveState } from '../app/service/save-status.service';

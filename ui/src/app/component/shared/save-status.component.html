@@ -1,0 +1,16 @@
+@if (saveStatus.state() === 'saving') {
+    <span class="save-status saving">
+        <mat-spinner diameter="14"></mat-spinner>
+        Saving…
+    </span>
+} @else if (saveStatus.state() === 'saved') {
+    <span class="save-status saved">
+        <mat-icon>check_circle</mat-icon>
+        Saved
+    </span>
+} @else if (saveStatus.state() === 'error') {
+    <span class="save-status error">
+        <mat-icon>error_outline</mat-icon>
+        Couldn't save
+    </span>
+}
