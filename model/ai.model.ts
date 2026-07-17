@@ -79,11 +79,11 @@ export interface ClaudeCompletion {
     };
 }
 
-export type ChatGPTModel = 'gpt-5.2' | 'gpt-5-mini' | 'gpt-5-nano';
+export type ChatGPTModel = 'gpt-5.4' | 'gpt-5.4-mini' | 'gpt-5.4-nano';
 export type GeminiModel = 'gemini-3-pro-preview' | 'gemini-3-pro-image-preview' | 'gemini-2.5-flash' | 'gemini-3-flash-preview' | 'gemini-3.1-pro-preview';
 export type ClaudeModel = 'claude-opus-4-7' | 'claude-sonnet-4-6' | 'claude-haiku-4-5';
 export type AIModel = ChatGPTModel | GeminiModel | ClaudeModel;
-export var AIModels: AIModel[] = ['gpt-5.2', 'gpt-5-mini', 'gpt-5-nano', 'gemini-3-pro-preview', 'gemini-3-pro-image-preview', 'gemini-2.5-flash', 'gemini-3-flash-preview', 'claude-opus-4-7', 'claude-sonnet-4-6', 'claude-haiku-4-5'];
+export var AIModels: AIModel[] = ['gpt-5.4', 'gpt-5.4-mini', 'gpt-5.4-nano', 'gemini-3-pro-preview', 'gemini-3-pro-image-preview', 'gemini-2.5-flash', 'gemini-3-flash-preview', 'claude-opus-4-7', 'claude-sonnet-4-6', 'claude-haiku-4-5'];
 
 export type AIToolChoice = 'auto' | 'required';
 export type ChatGPTToolChoice = 'auto' | 'required';

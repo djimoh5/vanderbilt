@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { BaseComponent } from 'bundle/component';
-import { AppService, PropertyService, AuthService } from 'bundle/service';
+import { AppService, PropertyService, AuthService, WorkspaceService } from 'bundle/service';
 import { Property, PropertyRoleType } from 'bundle/model';
 
 @Component({
@@ -53,7 +53,7 @@ export class PropertyListComponent extends BaseComponent implements OnInit {
 
     roleTypes = [PropertyRoleType.Admin, PropertyRoleType.Accountant, PropertyRoleType.Reviewer];
 
-    constructor(appService: AppService, private propertyService: PropertyService, private authService: AuthService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {
+    constructor(appService: AppService, private propertyService: PropertyService, private workspaceService: WorkspaceService, private authService: AuthService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef) {
         super(appService);
     }
 
@@ -87,6 +87,7 @@ export class PropertyListComponent extends BaseComponent implements OnInit {
             this.newPropertyYardiCode = '';
             this.snackBar.open('Property created', 'close', { duration: 3000 });
             await this.loadProperties();
+            await this.workspaceService.refreshProperties();
         } else {
             this.snackBar.open(res.msg || 'Failed to create property', 'close', { duration: 5000 });
         }

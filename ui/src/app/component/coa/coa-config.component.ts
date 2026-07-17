@@ -1,9 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,17 +8,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { BaseComponent, SaveStatusComponent } from 'bundle/component';
-import { AppService, PropertyService, CoaService, SaveStatusService } from 'bundle/service';
-import { Property, ChartOfAccount } from 'bundle/model';
+import { AppService, CoaService, SaveStatusService, WorkspaceService } from 'bundle/service';
+import { WorkspaceChangedEvent } from 'bundle/event';
+import { ChartOfAccount } from 'bundle/model';
 import { Common } from 'bundle/utility';
 
 @Component({
     selector: 'app-coa-config',
     imports: [
-        FormsModule,
         MatCardModule,
-        MatFormFieldModule,
-        MatSelectModule,
         MatExpansionModule,
         MatSlideToggleModule,
         MatIconModule,
@@ -34,40 +29,27 @@ import { Common } from 'bundle/utility';
     styleUrl: './coa-config.component.scss'
 })
 export class CoaConfigComponent extends BaseComponent implements OnInit {
-    properties: Property[] = [];
-    selectedPropertyId = '';
-
     accounts: ChartOfAccount[] = [];
     accountsByCategory: { category: string, accounts: ChartOfAccount[] }[] = [];
     activeAccountIds = new Set<string>();
 
-    loadingProperties = false;
     loadingAccounts = false;
 
-    constructor(appService: AppService, private propertyService: PropertyService, private coaService: CoaService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef, public saveStatus: SaveStatusService) {
+    constructor(appService: AppService, public workspaceService: WorkspaceService, private coaService: CoaService, private snackBar: MatSnackBar, private cdr: ChangeDetectorRef, public saveStatus: SaveStatusService) {
         super(appService);
     }
 
     async ngOnInit(): Promise<void> {
-        this.loadingProperties = true;
-        const res = await this.propertyService.getAll();
-        this.loadingProperties = false;
-
-        if (res.success) {
-            this.properties = res.data;
-
-            if (this.properties.length > 0) {
-                this.selectedPropertyId = this.properties[0].oid as string;
-                await this.onPropertyChange();
-                return;
-            }
-        }
-
-        this.cdr.detectChanges();
+        await this.workspaceService.ready();
+        this.subscribeEvent(WorkspaceChangedEvent, () => this.onPropertyChange());
+        await this.onPropertyChange();
     }
 
     async onPropertyChange() {
-        if (!this.selectedPropertyId) {
+        const propertyId = this.workspaceService.currentPropertyId;
+
+        if (!propertyId) {
+            this.cdr.detectChanges();
             return;
         }
 
@@ -75,7 +57,7 @@ export class CoaConfigComponent extends BaseComponent implements OnInit {
 
         const [accountsRes, activationsRes] = await Promise.all([
             this.coaService.getByTenant(),
-            this.coaService.getActivations(this.selectedPropertyId)
+            this.coaService.getActivations(propertyId)
         ]);
 
         this.loadingAccounts = false;
@@ -96,7 +78,7 @@ export class CoaConfigComponent extends BaseComponent implements OnInit {
 
     async toggleAccount(account: ChartOfAccount, active: boolean) {
         this.saveStatus.start();
-        const res = await this.coaService.setActivation(this.selectedPropertyId, account.oid as string, active);
+        const res = await this.coaService.setActivation(this.workspaceService.currentPropertyId, account.oid as string, active);
 
         if (res.success) {
             if (active) {

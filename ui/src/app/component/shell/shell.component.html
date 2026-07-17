@@ -6,12 +6,75 @@
         <span class="brand-name">Vanderbilt</span>
     </div>
 
+    @if (workspaceService.properties.length === 0) {
+        <a class="workspace-empty" routerLink="/properties">
+            <mat-icon>add_business</mat-icon>
+            Add a property
+        </a>
+    } @else {
+        <div class="workspace-pills">
+            <button type="button" class="workspace-pill" [matMenuTriggerFor]="propertyMenu">
+                <mat-icon>apartment</mat-icon>
+                <span class="pill-label">{{ selectedPropertyName }}</span>
+                <mat-icon class="chevron">expand_more</mat-icon>
+            </button>
+            <mat-menu #propertyMenu="matMenu" class="workspace-menu">
+                @for (property of workspaceService.properties; track property.oid) {
+                    <button mat-menu-item class="workspace-menu-item" [class.menu-item-active]="property.oid === selectedPropertyId" (click)="selectProperty(property.oid!)">
+                        <span>{{ property.name }}</span>
+                        @if (property.oid === selectedPropertyId) {
+                            <mat-icon class="menu-item-check">check</mat-icon>
+                        }
+                    </button>
+                }
+                <mat-divider></mat-divider>
+                <button mat-menu-item routerLink="/properties">
+                    <mat-icon>add</mat-icon>
+                    <span>Add new property</span>
+                </button>
+            </mat-menu>
+
+            <button type="button" class="workspace-pill" [matMenuTriggerFor]="periodMenu" (menuOpened)="onPeriodMenuOpened()">
+                <mat-icon>event</mat-icon>
+                <span class="pill-label">{{ selectedMonthLabel }} {{ selectedYear }}</span>
+                <mat-icon class="chevron">expand_more</mat-icon>
+            </button>
+            <mat-menu #periodMenu="matMenu" class="workspace-menu period-menu">
+                <div class="period-picker" (click)="$event.stopPropagation()">
+                    <div class="period-section">
+                        <span class="period-section-label">Month</span>
+                        <div class="month-grid">
+                            @for (month of months; track month.value) {
+                                <button type="button" class="period-chip" [class.period-chip-active]="month.value === selectedMonth" (click)="selectMonth(month.value)">
+                                    {{ month.label.slice(0, 3) }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="period-section">
+                        <span class="period-section-label">Year</span>
+                        <div class="year-list" #yearList>
+                            @for (year of years; track year) {
+                                <button type="button" class="period-chip year-chip" [class.period-chip-active]="year === selectedYear" (click)="selectYear(year)">
+                                    {{ year }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </mat-menu>
+        </div>
+    }
+
     <nav class="nav-links">
         <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
         <a class="nav-link" routerLink="/properties" routerLinkActive="active-link">Properties</a>
         <a class="nav-link" routerLink="/coa" routerLinkActive="active-link">Chart of Accounts</a>
         <a class="nav-link" routerLink="/trial-balance" routerLinkActive="active-link">Trial Balance</a>
         <a class="nav-link" routerLink="/documents" routerLinkActive="active-link">Documents</a>
+        <a class="nav-link" routerLink="/reconciliation" routerLinkActive="active-link">Reconciliation</a>
+        <a class="nav-link" routerLink="/checklist" routerLinkActive="active-link">Checklist</a>
+        <a class="nav-link" routerLink="/review" routerLinkActive="active-link">Review</a>
     </nav>
 
     <span class="spacer"></span>
@@ -22,6 +85,10 @@
         <mat-icon class="chevron">expand_more</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/settings/tolerance">
+            <mat-icon>tune</mat-icon>
+            <span>Variance Tolerance</span>
+        </button>
         <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>
             <span>Log out</span>

@@ -1,0 +1,54 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.section-card {
+    padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.empty-state {
+    color: var(--mat-sys-outline);
+    margin: 0;
+}
+
+.inbox-table {
+    width: 100%;
+}
+
+.amount-header,
+.amount-cell {
+    text-align: right;
+}
+
+.amount-cell {
+    font-variant-numeric: tabular-nums;
+}
+
+.variance-nonzero {
+    color: var(--swatch-red);
+    font-weight: 600;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background: rgba(16, 24, 40, 0.03);
+}

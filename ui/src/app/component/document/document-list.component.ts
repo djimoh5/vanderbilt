@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
@@ -14,8 +15,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { BaseComponent } from 'bundle/component';
-import { AppService, PropertyService, DocumentService } from 'bundle/service';
-import { Property, SourceDocument, DocType } from 'bundle/model';
+import { AppService, DocumentService, WorkspaceService } from 'bundle/service';
+import { WorkspaceChangedEvent } from 'bundle/event';
+import { SourceDocument, DocType } from 'bundle/model';
 
 interface DocTypeOption { value: DocType; label: string; }
 interface DocumentGroup { docType: DocType; label: string; latest: SourceDocument; versions: SourceDocument[]; }
@@ -24,6 +26,7 @@ interface DocumentGroup { docType: DocType; label: string; latest: SourceDocumen
     selector: 'app-document-list',
     imports: [
         FormsModule,
+        RouterLink,
         DatePipe,
         MatCardModule,
         MatFormFieldModule,
@@ -41,27 +44,6 @@ interface DocumentGroup { docType: DocType; label: string; latest: SourceDocumen
 })
 export class DocumentListComponent extends BaseComponent implements OnInit {
     @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
-
-    properties: Property[] = [];
-    selectedPropertyId = '';
-
-    months = [
-        { value: 1, label: 'January' }, { value: 2, label: 'February' }, { value: 3, label: 'March' },
-        { value: 4, label: 'April' }, { value: 5, label: 'May' }, { value: 6, label: 'June' },
-        { value: 7, label: 'July' }, { value: 8, label: 'August' }, { value: 9, label: 'September' },
-        { value: 10, label: 'October' }, { value: 11, label: 'November' }, { value: 12, label: 'December' }
-    ];
-    years = Array.from({ length: 2050 - 2010 + 1 }, (_, i) => 2010 + i);
-
-    selectedMonth: number | null = null;
-    selectedYear: number | null = null;
-
-    get period(): string {
-        if (!this.selectedMonth || !this.selectedYear) {
-            return '';
-        }
-        return `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
-    }
 
     docTypes: DocTypeOption[] = [
         { value: DocType.BankStatement, label: 'Bank Statement' },
@@ -86,7 +68,7 @@ export class DocumentListComponent extends BaseComponent implements OnInit {
 
     constructor(
         appService: AppService,
-        private propertyService: PropertyService,
+        public workspaceService: WorkspaceService,
         private documentService: DocumentService,
         private snackBar: MatSnackBar,
         private cdr: ChangeDetectorRef
@@ -95,20 +77,12 @@ export class DocumentListComponent extends BaseComponent implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const res = await this.propertyService.getAll();
-
-        if (res.success) {
-            this.properties = res.data;
-
-            if (this.properties.length > 0) {
-                this.selectedPropertyId = this.properties[0].oid as string;
-            }
-        }
-
-        this.cdr.detectChanges();
+        await this.workspaceService.ready();
+        this.subscribeEvent(WorkspaceChangedEvent, () => this.onWorkspaceChanged());
+        await this.loadDocuments();
     }
 
-    async onSelectionChange() {
+    private async onWorkspaceChanged() {
         this.clearSelectedFile();
         await this.loadDocuments();
     }
@@ -116,12 +90,16 @@ export class DocumentListComponent extends BaseComponent implements OnInit {
     async loadDocuments() {
         this.documentGroups = [];
 
-        if (!this.selectedPropertyId || !this.period) {
+        const propertyId = this.workspaceService.currentPropertyId;
+        const period = this.workspaceService.currentPeriod;
+
+        if (!propertyId || !period) {
+            this.cdr.detectChanges();
             return;
         }
 
         this.loadingDocs = true;
-        const res = await this.documentService.getByPropertyPeriod(this.selectedPropertyId, this.period);
+        const res = await this.documentService.getByPropertyPeriod(propertyId, period);
         this.loadingDocs = false;
 
         if (res.success) {
@@ -164,12 +142,15 @@ export class DocumentListComponent extends BaseComponent implements OnInit {
     }
 
     async upload() {
-        if (!this.selectedPropertyId || !this.period || !this.selectedDocType || !this.selectedFile) {
+        const propertyId = this.workspaceService.currentPropertyId;
+        const period = this.workspaceService.currentPeriod;
+
+        if (!propertyId || !period || !this.selectedDocType || !this.selectedFile) {
             return;
         }
 
         this.uploading = true;
-        const res = await this.documentService.upload(this.selectedPropertyId, this.period, this.selectedDocType, this.selectedFile);
+        const res = await this.documentService.upload(propertyId, period, this.selectedDocType, this.selectedFile);
         this.uploading = false;
 
         if (res.success) {

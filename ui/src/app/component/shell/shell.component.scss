@@ -45,6 +45,169 @@
     color: #1a1a2e;
 }
 
+.workspace-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 1rem;
+}
+
+.workspace-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 36px;
+    max-width: 220px;
+    padding: 0 0.75rem;
+    border: none;
+    border-radius: 999px;
+    background: rgba(16, 24, 40, 0.05);
+    color: var(--mat-sys-on-surface);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.workspace-pill:hover {
+    background: rgba(16, 24, 40, 0.09);
+}
+
+.workspace-pill mat-icon:first-child {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--mat-sys-primary);
+    flex-shrink: 0;
+}
+
+.workspace-pill .chevron {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--mat-sys-outline);
+    flex-shrink: 0;
+}
+
+.pill-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+::ng-deep .workspace-menu .workspace-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+::ng-deep .workspace-menu .menu-item-active {
+    color: var(--mat-sys-primary);
+    font-weight: 700;
+}
+
+::ng-deep .workspace-menu .menu-item-check {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--mat-sys-primary);
+}
+
+::ng-deep .period-menu .mat-mdc-menu-content {
+    padding: 0.75rem;
+}
+
+.period-picker {
+    display: flex;
+    gap: 1rem;
+}
+
+.period-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.period-section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mat-sys-outline);
+    padding: 0 0.2rem;
+}
+
+.month-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+    width: 168px;
+}
+
+.period-chip {
+    border: none;
+    background: transparent;
+    border-radius: 999px;
+    padding: 0.4rem 0.5rem;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.period-chip:hover {
+    background: rgba(16, 24, 40, 0.07);
+}
+
+.period-chip-active {
+    background: var(--mat-sys-primary);
+    color: #fff;
+    font-weight: 700;
+}
+
+.year-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    width: 90px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.year-chip {
+    text-align: left;
+}
+
+.workspace-empty {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 36px;
+    padding: 0 0.9rem;
+    margin-right: 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--mat-sys-primary);
+    background: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
+    text-decoration: none;
+}
+
+.workspace-empty:hover {
+    background: color-mix(in srgb, var(--mat-sys-primary) 16%, transparent);
+}
+
+.workspace-empty mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
 .nav-links {
     display: flex;
     gap: 0.25rem;

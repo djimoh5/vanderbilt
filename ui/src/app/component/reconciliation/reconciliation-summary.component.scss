@@ -1,0 +1,83 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.section-card {
+    padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.empty-state {
+    color: var(--mat-sys-outline);
+    margin: 0;
+}
+
+.reconciliation-table {
+    width: 100%;
+}
+
+.amount-header,
+.amount-cell {
+    text-align: right;
+}
+
+.amount-cell {
+    font-variant-numeric: tabular-nums;
+}
+
+.variance-percent {
+    color: var(--mat-sys-outline);
+    font-size: 0.8rem;
+    margin-left: 0.25rem;
+}
+
+.variance-nonzero {
+    color: var(--swatch-red);
+    font-weight: 600;
+}
+
+mat-chip.status-tied {
+    background-color: color-mix(in srgb, var(--swatch-green) 18%, transparent) !important;
+    color: var(--swatch-green) !important;
+}
+
+mat-chip.status-review {
+    background-color: color-mix(in srgb, var(--swatch-orange) 18%, transparent) !important;
+    color: var(--swatch-orange) !important;
+}
+
+mat-chip.status-discrepancy {
+    background-color: color-mix(in srgb, var(--swatch-red) 18%, transparent) !important;
+    color: var(--swatch-red) !important;
+}
+
+.ai-explanation {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--swatch-blue) 6%, transparent);
+    font-size: 0.875rem;
+}
+
+.ai-explanation mat-icon {
+    color: var(--swatch-blue);
+    flex-shrink: 0;
+}

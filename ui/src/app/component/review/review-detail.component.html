@@ -1,0 +1,149 @@
+<div class="page">
+    <div class="page-header">
+        <a mat-icon-button routerLink="/review" class="back-button">
+            <mat-icon>arrow_back</mat-icon>
+        </a>
+        <h1>Review</h1>
+        @if (detail) {
+            <mat-chip [class]="statusClass(detail.item.status)">{{ statusLabel(detail.item.status) }}</mat-chip>
+        }
+    </div>
+
+    @if (loading) {
+        <mat-spinner diameter="24"></mat-spinner>
+    } @else if (!detail) {
+        <p class="empty-state">This review item could not be found.</p>
+    } @else {
+        <div class="detail-meta">
+            <span class="meta-item">{{ detail.propertyName }}</span>
+            <span class="dot">&middot;</span>
+            <span class="meta-item">{{ detail.item.period }}</span>
+            <span class="dot">&middot;</span>
+            <span class="meta-item">TB account {{ detail.reconciliation.tbAccountNumber }}</span>
+            <span class="spacer"></span>
+            <a mat-stroked-button [routerLink]="['/extraction', detail.reconciliation.sourceDocumentId]">
+                <mat-icon>description</mat-icon>
+                View source document
+            </a>
+        </div>
+
+        <div class="side-by-side">
+            <mat-card class="section-card">
+                <mat-card-header>
+                    <mat-card-title>Extracted fields</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <table mat-table [dataSource]="detail.extracted.fields" class="field-table">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Field</th>
+                            <td mat-cell *matCellDef="let field">{{ field.name }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="value">
+                            <th mat-header-cell *matHeaderCellDef>Value</th>
+                            <td mat-cell *matCellDef="let field">{{ field.value }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="confidence">
+                            <th mat-header-cell *matHeaderCellDef class="confidence-header">Confidence</th>
+                            <td mat-cell *matCellDef="let field" class="confidence-cell">{{ field.confidence | number:'1.0-2' }}</td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="section-card">
+                <mat-card-header>
+                    <mat-card-title>Trial Balance</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="tb-summary">
+                        <div class="tb-row">
+                            <span class="tb-label">TB balance</span>
+                            <span class="tb-value">{{ detail.reconciliation.tbBalance | currency }}</span>
+                        </div>
+                        <div class="tb-row">
+                            <span class="tb-label">Extracted total</span>
+                            <span class="tb-value">{{ detail.reconciliation.extractedTotal | currency }}</span>
+                        </div>
+                        <div class="tb-row">
+                            <span class="tb-label">Variance</span>
+                            <span class="tb-value" [class.variance-nonzero]="detail.reconciliation.variance !== 0">
+                                {{ detail.reconciliation.variance | currency }}
+                            </span>
+                        </div>
+                    </div>
+
+                    @if (detail.reconciliation.aiExplanation) {
+                        <div class="ai-explanation">
+                            <mat-icon>auto_awesome</mat-icon>
+                            <span>{{ detail.reconciliation.aiExplanation }}</span>
+                        </div>
+                    }
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <mat-card class="section-card">
+            <mat-card-header>
+                <mat-card-title>Comments</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                @if (detail.item.comments.length === 0) {
+                    <p class="empty-state">No comments yet.</p>
+                } @else {
+                    <div class="comment-thread">
+                        @for (comment of detail.item.comments; track comment.createdAt) {
+                            <div class="comment-row" [class.comment-own]="isOwnComment(comment.authorId)">
+                                <span class="comment-author">{{ isOwnComment(comment.authorId) ? 'You' : 'Reviewer' }}</span>
+                                <span class="comment-text">{{ comment.text }}</span>
+                                <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (detail.item.status === ReviewItemStatus.Open) {
+                    <div class="comment-form">
+                        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="comment-input">
+                            <mat-label>Add a comment</mat-label>
+                            <input matInput [(ngModel)]="newComment" (keydown.enter)="addComment()" placeholder="Explain the variance or note a correction...">
+                        </mat-form-field>
+                        <button mat-stroked-button [disabled]="!newComment.trim() || posting" (click)="addComment()">
+                            @if (posting) {
+                                <mat-spinner diameter="18"></mat-spinner>
+                            } @else {
+                                <mat-icon>send</mat-icon>
+                            }
+                            Comment
+                        </button>
+                    </div>
+                }
+            </mat-card-content>
+        </mat-card>
+
+        @if (detail.item.status === ReviewItemStatus.Open) {
+            <div class="resolve-row">
+                <button mat-stroked-button color="warn" [disabled]="resolving" (click)="resolve('rejected')">
+                    <mat-icon>close</mat-icon>
+                    Reject
+                </button>
+                <button mat-raised-button color="primary" [disabled]="resolving" (click)="resolve('approved')">
+                    @if (resolving) {
+                        <mat-spinner diameter="18"></mat-spinner>
+                    } @else {
+                        <mat-icon>check</mat-icon>
+                    }
+                    Approve
+                </button>
+            </div>
+        } @else {
+            <p class="resolved-note">
+                {{ statusLabel(detail.item.status) }} {{ detail.item.resolvedAt | date:'medium' }}
+            </p>
+        }
+    }
+</div>

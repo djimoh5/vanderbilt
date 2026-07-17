@@ -24,13 +24,13 @@ const util = require('util');
 export class ChatGPTService extends BaseAIService implements IAIService {
     protected defaultOptions: AICompletionOptions = { 
         maxTokens: AIMaxTokens.Maximum,
-        model: 'gpt-5.2',
+        model: 'gpt-5.4',
         temperature: 0,
         logResponse: true 
     };
     
     constructor(appService: AppService, sharedRepository: SharedRepository, private http: HttpService) {
-        super(['gpt-5.2', 'gpt-5-mini', 'gpt-5-nano'], appService, sharedRepository);
+        super(['gpt-5.4', 'gpt-5.4-mini', 'gpt-5.4-nano'], appService, sharedRepository);
     }
  
     async getTextCompletions(messages: ChatGPTMessage[], options: AICompletionOptions, authId: authid): Promise<ApiResponse<ChatGPTCompletionChoice[]>> {
@@ -38,10 +38,10 @@ export class ChatGPTService extends BaseAIService implements IAIService {
 
         const config: ChatGPTAPICallConfig = {
             model: options.model,
-            messages: messages
+            messages: this.mapMessages(messages)
         };
 
-        if(options.model === 'gpt-5.2') {
+        if(options.model === 'gpt-5.4') {
             config.reasoning_effort = 'medium';
         }
 
@@ -57,16 +57,37 @@ export class ChatGPTService extends BaseAIService implements IAIService {
 
         const config: ChatGPTAPICallConfig = {
             model: options.model,
-            messages: messages,
+            messages: this.mapMessages(messages),
             tools: tools,
             tool_choice: toolChoice
         };
 
-        if(options.model === 'gpt-5.2') {
+        if(options.model === 'gpt-5.4') {
             config.reasoning_effort = 'none';
         }
         
         return this.callAPI(config, authId, options.logResponse);
+    }
+
+    // our shared AIMessage content shape only carries { type: 'file', file?: string } (raw base64) -
+    // OpenAI expects a PDF content part shaped { type: 'file', file: { filename, file_data } }, so wrap
+    // any raw-base64 file blocks into that shape before sending. Mirrors (in miniature) the mapMessages
+    // step Claude/Gemini already do for their own wire formats.
+    private mapMessages(messages: ChatGPTMessage[]): ChatGPTMessage[] {
+        return messages.map(m => {
+            if (!Array.isArray(m.content)) {
+                return m;
+            }
+
+            const content = m.content.map((block: any) => {
+                if (block.type === 'file' && typeof block.file === 'string') {
+                    return { type: 'file', file: { filename: 'document.pdf', file_data: `data:application/pdf;base64,${block.file}` } };
+                }
+                return block;
+            });
+
+            return { ...m, content } as ChatGPTMessage;
+        });
     }
 
     async groundedSearch(query: string, authId: authid): Promise<{ text: string; sources: Array<{ url: string; title: string }> }> {

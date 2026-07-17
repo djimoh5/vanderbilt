@@ -27,27 +27,6 @@ h1 {
     margin: 0;
 }
 
-.selectors {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.property-select {
-    width: 100%;
-    max-width: 320px;
-}
-
-.month-select {
-    width: 100%;
-    max-width: 180px;
-}
-
-.year-select {
-    width: 100%;
-    max-width: 130px;
-}
-
 .upload-row {
     display: flex;
     align-items: center;

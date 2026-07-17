@@ -1,0 +1,85 @@
+<div class="page">
+    <div class="page-header">
+        <h1>PreClose Checklist</h1>
+        <app-save-status />
+    </div>
+
+    @if (loading) {
+        <mat-spinner diameter="24"></mat-spinner>
+    } @else if (!workspaceService.currentPropertyId || !workspaceService.currentPeriod) {
+        <p class="empty-state">Select a property and period to view its checklist.</p>
+    } @else if (!instance) {
+        <mat-card class="section-card">
+            <mat-card-content>
+                <p class="empty-state">No PreClose Checklist started yet for this property and period.</p>
+                <button mat-raised-button color="primary" [disabled]="starting" (click)="startChecklist()">
+                    @if (starting) {
+                        <mat-spinner diameter="18"></mat-spinner>
+                    } @else {
+                        <mat-icon>playlist_add_check</mat-icon>
+                    }
+                    Start Checklist
+                </button>
+            </mat-card-content>
+        </mat-card>
+    } @else {
+        <div class="progress-row">
+            <span class="progress-label">{{ answeredCount }} of {{ totalCount }} answered</span>
+            <mat-progress-bar mode="determinate" [value]="completionPercent"></mat-progress-bar>
+        </div>
+
+        <mat-accordion multi class="category-accordion">
+            @for (group of categoryGroups; track group.category; let i = $index) {
+                <mat-expansion-panel class="category-panel" [class]="'swatch-' + (i % 6)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="category-dot"></span>
+                            {{ group.category }}
+                        </mat-panel-title>
+                        <mat-panel-description>{{ group.rows.length }} items</mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    @for (row of group.rows; track row.key) {
+                        <div class="item-row">
+                            <div class="item-top">
+                                <span class="item-label">{{ row.label }}</span>
+                                <mat-button-toggle-group class="status-toggle" [value]="row.response.status" (change)="updateStatus(row.key, $event.value)">
+                                    <mat-button-toggle [value]="ChecklistItemStatus.Yes">Yes</mat-button-toggle>
+                                    <mat-button-toggle [value]="ChecklistItemStatus.No">No</mat-button-toggle>
+                                    <mat-button-toggle [value]="ChecklistItemStatus.NA">N/A</mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
+
+                            @if (row.response.comments.length > 0) {
+                                <div class="comment-thread">
+                                    @for (comment of row.response.comments; track comment.createdAt) {
+                                        <div class="comment-row" [class.comment-own]="isOwnComment(comment.authorId)">
+                                            <span class="comment-author">{{ isOwnComment(comment.authorId) ? 'You' : 'Reviewer' }}</span>
+                                            <span class="comment-text">{{ comment.text }}</span>
+                                            <span class="comment-date">{{ comment.createdAt | date:'short' }}</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            <div class="comment-form">
+                                <mat-form-field appearance="outline" subscriptSizing="dynamic" class="comment-input">
+                                    <mat-label>Add a comment</mat-label>
+                                    <input matInput [(ngModel)]="newCommentByKey[row.key]" (keydown.enter)="addComment(row.key)" placeholder="Note for the accountant or manager...">
+                                </mat-form-field>
+                                <button mat-stroked-button [disabled]="!newCommentByKey[row.key]?.trim() || postingCommentKey === row.key" (click)="addComment(row.key)">
+                                    @if (postingCommentKey === row.key) {
+                                        <mat-spinner diameter="18"></mat-spinner>
+                                    } @else {
+                                        <mat-icon>send</mat-icon>
+                                    }
+                                    Comment
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </mat-expansion-panel>
+            }
+        </mat-accordion>
+    }
+</div>

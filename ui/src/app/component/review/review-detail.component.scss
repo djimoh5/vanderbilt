@@ -1,0 +1,196 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.back-button {
+    margin-left: -0.5rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.section-card {
+    padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.empty-state {
+    color: var(--mat-sys-outline);
+    margin: 20px 0;
+}
+
+.detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    color: var(--mat-sys-outline);
+    font-size: 0.875rem;
+}
+
+.dot {
+    color: var(--mat-sys-outline);
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 800px) {
+    .side-by-side {
+        grid-template-columns: 1fr;
+    }
+}
+
+.field-table {
+    width: 100%;
+}
+
+.confidence-header,
+.confidence-cell {
+    text-align: right;
+}
+
+.tb-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tb-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.tb-row:last-child {
+    border-bottom: none;
+}
+
+.tb-label {
+    color: var(--mat-sys-outline);
+    font-size: 0.875rem;
+}
+
+.tb-value {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.variance-nonzero {
+    color: var(--swatch-red);
+}
+
+.ai-explanation {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--swatch-blue) 6%, transparent);
+    font-size: 0.875rem;
+}
+
+.ai-explanation mat-icon {
+    color: var(--swatch-blue);
+    flex-shrink: 0;
+}
+
+.comment-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.comment-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    margin: 1rem 0;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--mat-sys-outline) 6%, transparent);
+    flex-wrap: wrap;
+}
+
+.comment-own {
+    background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+}
+
+.comment-author {
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.comment-text {
+    flex: 1 1 auto;
+    font-size: 0.9rem;
+}
+
+.comment-date {
+    color: var(--mat-sys-outline);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.comment-form {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.comment-input {
+    flex: 1 1 auto;
+}
+
+.resolve-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.resolved-note {
+    color: var(--mat-sys-outline);
+    font-size: 0.875rem;
+    text-align: right;
+    margin: 0;
+}
+
+mat-chip.status-open {
+    background-color: color-mix(in srgb, var(--swatch-orange) 18%, transparent) !important;
+    color: var(--swatch-orange) !important;
+}
+
+mat-chip.status-approved {
+    background-color: color-mix(in srgb, var(--swatch-green) 18%, transparent) !important;
+    color: var(--swatch-green) !important;
+}
+
+mat-chip.status-rejected {
+    background-color: color-mix(in srgb, var(--swatch-red) 18%, transparent) !important;
+    color: var(--swatch-red) !important;
+}

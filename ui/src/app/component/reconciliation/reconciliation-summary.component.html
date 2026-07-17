@@ -1,0 +1,68 @@
+<div class="page">
+    <div class="page-header">
+        <h1>Reconciliation</h1>
+    </div>
+
+    @if (loading) {
+        <mat-spinner diameter="24"></mat-spinner>
+    } @else if (results.length > 0) {
+        <mat-card class="section-card">
+            <mat-card-content>
+                <table mat-table [dataSource]="results" class="reconciliation-table">
+                    <ng-container matColumnDef="tbAccountNumber">
+                        <th mat-header-cell *matHeaderCellDef>TB Account</th>
+                        <td mat-cell *matCellDef="let row">{{ row.tbAccountNumber }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tbBalance">
+                        <th mat-header-cell *matHeaderCellDef class="amount-header">TB Balance</th>
+                        <td mat-cell *matCellDef="let row" class="amount-cell">{{ row.tbBalance | currency }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="extractedTotal">
+                        <th mat-header-cell *matHeaderCellDef class="amount-header">Extracted Total</th>
+                        <td mat-cell *matCellDef="let row" class="amount-cell">{{ row.extractedTotal | currency }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="variance">
+                        <th mat-header-cell *matHeaderCellDef class="amount-header">Variance</th>
+                        <td mat-cell *matCellDef="let row" class="amount-cell" [class.variance-nonzero]="row.variance !== 0">
+                            {{ row.variance | currency }}
+                            <span class="variance-percent">({{ row.variancePercent | percent:'1.1-1' }})</span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let row">
+                            <mat-chip [class]="statusClass(row.status)">{{ statusLabel(row.status) }}</mat-chip>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let row">
+                            <a mat-icon-button [routerLink]="['/extraction', row.sourceDocumentId]" matTooltip="View source document">
+                                <mat-icon>description</mat-icon>
+                            </a>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                @for (row of results; track row.oid) {
+                    @if (row.aiExplanation) {
+                        <div class="ai-explanation">
+                            <mat-icon>auto_awesome</mat-icon>
+                            <span><strong>{{ row.tbAccountNumber }}:</strong> {{ row.aiExplanation }}</span>
+                        </div>
+                    }
+                }
+            </mat-card-content>
+        </mat-card>
+    } @else if (workspaceService.currentPropertyId && workspaceService.currentPeriod) {
+        <p class="empty-state">No reconciliation results yet for this property and period. Run extraction on a document, then reconcile it from its extraction page.</p>
+    }
+</div>

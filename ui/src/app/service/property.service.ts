@@ -7,14 +7,9 @@ import { Property, PropertyRole, PropertyRoleType } from 'bundle/model';
 
 @Injectable()
 export class PropertyService extends BaseService {
-    private _currentPropertyId: string;
-
     constructor(apiService: ApiService, appService: AppService) {
         super(apiService, appService, '');
     }
-
-    get currentPropertyId(): string { return this._currentPropertyId; }
-    setCurrentProperty(propertyId: string) { this._currentPropertyId = propertyId; }
 
     getAll(): Promise<ApiResponse<Property[]>> {
         return this.get('property');

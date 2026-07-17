@@ -33,7 +33,7 @@ export class AIService extends BaseAIService implements IAIService {
     }
 
     getEmbedding(text: string): Promise<number[]> {
-        const chatGPT = this.aiServices.find(s => s.models.includes('gpt-5-mini')) as ChatGPTService;
+        const chatGPT = this.aiServices.find(s => s.models.includes('gpt-5.4-mini')) as ChatGPTService;
         return chatGPT ? chatGPT.getEmbedding(text) : Promise.resolve([]);
     }
 

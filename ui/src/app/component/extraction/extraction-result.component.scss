@@ -1,0 +1,141 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.back-button {
+    margin-left: -0.5rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.section-card {
+    padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.empty-state {
+    color: var(--mat-sys-outline);
+    margin: 0 0 1rem;
+}
+
+.result-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+}
+
+.meta-item {
+    color: var(--mat-sys-outline);
+    font-size: 0.875rem;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.field-table {
+    width: 100%;
+}
+
+.confidence-header,
+.confidence-cell {
+    text-align: right;
+}
+
+mat-chip.confidence-high {
+    background-color: color-mix(in srgb, var(--swatch-green) 18%, transparent) !important;
+    color: var(--swatch-green) !important;
+}
+
+mat-chip.confidence-medium {
+    background-color: color-mix(in srgb, var(--swatch-orange) 18%, transparent) !important;
+    color: var(--swatch-orange) !important;
+}
+
+mat-chip.confidence-low {
+    background-color: color-mix(in srgb, var(--swatch-red) 18%, transparent) !important;
+    color: var(--swatch-red) !important;
+}
+
+h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.recon-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+}
+
+.recon-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.variance-nonzero {
+    color: var(--swatch-red);
+    font-weight: 600;
+}
+
+.account-override {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+}
+
+.override-hint {
+    color: var(--mat-sys-outline);
+    font-size: 0.8rem;
+}
+
+.ai-explanation {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--swatch-blue) 6%, transparent);
+    font-size: 0.875rem;
+}
+
+.ai-explanation mat-icon {
+    color: var(--swatch-blue);
+    flex-shrink: 0;
+}
+
+mat-chip.status-tied {
+    background-color: color-mix(in srgb, var(--swatch-green) 18%, transparent) !important;
+    color: var(--swatch-green) !important;
+}
+
+mat-chip.status-review {
+    background-color: color-mix(in srgb, var(--swatch-orange) 18%, transparent) !important;
+    color: var(--swatch-orange) !important;
+}
+
+mat-chip.status-discrepancy {
+    background-color: color-mix(in srgb, var(--swatch-red) 18%, transparent) !important;
+    color: var(--swatch-red) !important;
+}

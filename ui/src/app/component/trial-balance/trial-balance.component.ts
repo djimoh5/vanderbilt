@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -14,18 +11,16 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { BaseComponent } from 'bundle/component';
-import { AppService, PropertyService, DocumentService, TrialBalanceService } from 'bundle/service';
-import { Property, TrialBalanceSnapshot, TrialBalanceAccountLine } from 'bundle/model';
+import { AppService, DocumentService, TrialBalanceService, WorkspaceService } from 'bundle/service';
+import { WorkspaceChangedEvent } from 'bundle/event';
+import { TrialBalanceSnapshot, TrialBalanceAccountLine } from 'bundle/model';
 
 @Component({
     selector: 'app-trial-balance',
     imports: [
-        FormsModule,
         CurrencyPipe,
         DatePipe,
         MatCardModule,
-        MatFormFieldModule,
-        MatSelectModule,
         MatButtonModule,
         MatIconModule,
         MatTableModule,
@@ -40,27 +35,6 @@ import { Property, TrialBalanceSnapshot, TrialBalanceAccountLine } from 'bundle/
 export class TrialBalanceComponent extends BaseComponent implements OnInit {
     @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
 
-    properties: Property[] = [];
-    selectedPropertyId = '';
-
-    months = [
-        { value: 1, label: 'January' }, { value: 2, label: 'February' }, { value: 3, label: 'March' },
-        { value: 4, label: 'April' }, { value: 5, label: 'May' }, { value: 6, label: 'June' },
-        { value: 7, label: 'July' }, { value: 8, label: 'August' }, { value: 9, label: 'September' },
-        { value: 10, label: 'October' }, { value: 11, label: 'November' }, { value: 12, label: 'December' }
-    ];
-    years = Array.from({ length: 2050 - 2010 + 1 }, (_, i) => 2010 + i);
-
-    selectedMonth: number | null = null;
-    selectedYear: number | null = null;
-
-    get period(): string {
-        if (!this.selectedMonth || !this.selectedYear) {
-            return '';
-        }
-        return `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
-    }
-
     selectedFile: File | null = null;
     uploading = false;
 
@@ -72,7 +46,7 @@ export class TrialBalanceComponent extends BaseComponent implements OnInit {
 
     constructor(
         appService: AppService,
-        private propertyService: PropertyService,
+        public workspaceService: WorkspaceService,
         private documentService: DocumentService,
         private trialBalanceService: TrialBalanceService,
         private snackBar: MatSnackBar,
@@ -82,38 +56,37 @@ export class TrialBalanceComponent extends BaseComponent implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const res = await this.propertyService.getAll();
-
-        if (res.success) {
-            this.properties = res.data;
-
-            if (this.properties.length > 0) {
-                this.selectedPropertyId = this.properties[0].oid as string;
-            }
-        }
-
-        this.cdr.detectChanges();
+        await this.workspaceService.ready();
+        this.subscribeEvent(WorkspaceChangedEvent, () => this.onWorkspaceChanged());
+        await this.loadSnapshot();
     }
 
-    async onSelectionChange() {
+    private async onWorkspaceChanged() {
+        this.clearSelectedFile();
+        await this.loadSnapshot();
+    }
+
+    private clearSelectedFile() {
         this.selectedFile = null;
         if (this.fileInputRef) {
             this.fileInputRef.nativeElement.value = '';
         }
-
-        await this.loadSnapshot();
     }
 
     async loadSnapshot() {
         this.snapshot = null;
         this.sortedAccounts = [];
 
-        if (!this.selectedPropertyId || !this.period) {
+        const propertyId = this.workspaceService.currentPropertyId;
+        const period = this.workspaceService.currentPeriod;
+
+        if (!propertyId || !period) {
+            this.cdr.detectChanges();
             return;
         }
 
         this.loadingSnapshot = true;
-        const res = await this.trialBalanceService.getByPropertyPeriod(this.selectedPropertyId, this.period);
+        const res = await this.trialBalanceService.getByPropertyPeriod(propertyId, period);
         this.loadingSnapshot = false;
 
         if (res.success && res.data) {
@@ -130,7 +103,10 @@ export class TrialBalanceComponent extends BaseComponent implements OnInit {
     }
 
     async upload() {
-        if (!this.selectedPropertyId || !this.period || !this.selectedFile) {
+        const propertyId = this.workspaceService.currentPropertyId;
+        const period = this.workspaceService.currentPeriod;
+
+        if (!propertyId || !period || !this.selectedFile) {
             return;
         }
 
@@ -138,7 +114,7 @@ export class TrialBalanceComponent extends BaseComponent implements OnInit {
 
         const uploadInfo = await this.documentService.getUploadInfo(this.selectedFile);
         await this.documentService.uploadFile(uploadInfo.signedRequest, this.selectedFile);
-        const res = await this.trialBalanceService.import(this.selectedPropertyId, this.period, uploadInfo.url);
+        const res = await this.trialBalanceService.import(propertyId, period, uploadInfo.url);
 
         this.uploading = false;
 

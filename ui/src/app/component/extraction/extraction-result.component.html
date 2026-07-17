@@ -1,0 +1,119 @@
+<div class="page">
+    <div class="page-header">
+        <a mat-icon-button routerLink="/documents" class="back-button">
+            <mat-icon>arrow_back</mat-icon>
+        </a>
+        <h1>Extraction Result</h1>
+    </div>
+
+    @if (loading) {
+        <mat-spinner diameter="24"></mat-spinner>
+    } @else {
+        <mat-card class="section-card">
+            <mat-card-content>
+                @if (!result) {
+                    <p class="empty-state">No extraction has been run for this document yet.</p>
+                    <button mat-raised-button color="primary" [disabled]="running" (click)="runExtraction()">
+                        @if (running) {
+                            <mat-spinner diameter="18"></mat-spinner>
+                        } @else {
+                            <mat-icon>auto_awesome</mat-icon>
+                        }
+                        Run Extraction
+                    </button>
+                } @else {
+                    <div class="result-meta">
+                        <mat-chip [class]="confidenceClass(result.overallConfidence)">
+                            Overall confidence: {{ result.overallConfidence | number:'1.0-2' }}
+                        </mat-chip>
+                        <span class="meta-item">model: {{ result.aiModel }}</span>
+                        <span class="meta-item">extracted {{ result.extractedAt | date:'medium' }}</span>
+
+                        <span class="spacer"></span>
+
+                        <button mat-stroked-button [disabled]="running" (click)="runExtraction()">
+                            @if (running) {
+                                <mat-spinner diameter="18"></mat-spinner>
+                            } @else {
+                                <mat-icon>refresh</mat-icon>
+                            }
+                            Re-run extraction
+                        </button>
+                    </div>
+
+                    <table mat-table [dataSource]="result.fields" class="field-table">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>Field</th>
+                            <td mat-cell *matCellDef="let field">{{ field.name }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="value">
+                            <th mat-header-cell *matHeaderCellDef>Value</th>
+                            <td mat-cell *matCellDef="let field">{{ field.value }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="confidence">
+                            <th mat-header-cell *matHeaderCellDef class="confidence-header">Confidence</th>
+                            <td mat-cell *matCellDef="let field" class="confidence-cell">
+                                <mat-chip [class]="confidenceClass(field.confidence)">{{ field.confidence | number:'1.0-2' }}</mat-chip>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                }
+            </mat-card-content>
+        </mat-card>
+
+        @if (result) {
+            <mat-card class="section-card">
+                <mat-card-content>
+                    <div class="recon-header">
+                        <h2>Reconciliation</h2>
+                        <span class="spacer"></span>
+                        <button mat-raised-button color="primary" [disabled]="reconciling" (click)="runReconciliation()">
+                            @if (reconciling) {
+                                <mat-spinner diameter="18"></mat-spinner>
+                            } @else {
+                                <mat-icon>balance</mat-icon>
+                            }
+                            {{ reconciliation ? 'Re-run reconciliation' : 'Run reconciliation' }}
+                        </button>
+                    </div>
+
+                    @if (showAccountOverride) {
+                        <div class="account-override">
+                            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                                <mat-label>TB Account Number</mat-label>
+                                <input matInput [(ngModel)]="tbAccountNumberOverride" placeholder="e.g. 1110-000">
+                            </mat-form-field>
+                            <span class="override-hint">Specify which Trial Balance account this document reconciles against, then retry.</span>
+                        </div>
+                    }
+
+                    @if (reconciliation) {
+                        <div class="recon-summary">
+                            <mat-chip [class]="statusClass(reconciliation.status)">{{ statusLabel(reconciliation.status) }}</mat-chip>
+                            <span class="meta-item">TB account {{ reconciliation.tbAccountNumber }}</span>
+                            <span class="meta-item">TB balance {{ reconciliation.tbBalance | currency }}</span>
+                            <span class="meta-item">extracted total {{ reconciliation.extractedTotal | currency }}</span>
+                            <span class="meta-item" [class.variance-nonzero]="reconciliation.variance !== 0">
+                                variance {{ reconciliation.variance | currency }}
+                            </span>
+                        </div>
+
+                        @if (reconciliation.aiExplanation) {
+                            <div class="ai-explanation">
+                                <mat-icon>auto_awesome</mat-icon>
+                                <span>{{ reconciliation.aiExplanation }}</span>
+                            </div>
+                        }
+                    } @else if (!showAccountOverride) {
+                        <p class="empty-state">Not reconciled against the Trial Balance yet.</p>
+                    }
+                </mat-card-content>
+            </mat-card>
+        }
+    }
+</div>

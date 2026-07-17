@@ -1,0 +1,42 @@
+<div class="page">
+    <div class="page-header">
+        <h1>Variance Tolerance</h1>
+        <app-save-status />
+    </div>
+
+    <mat-card class="section-card">
+        <mat-card-content>
+            @if (loading) {
+                <mat-spinner diameter="24"></mat-spinner>
+            } @else {
+                <p class="hint">
+                    A reconciliation auto-ties when the variance is within <strong>either</strong> the dollar or percent
+                    tolerance below. Applies tenant-wide across every property and period.
+                </p>
+
+                <div class="tolerance-fields">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Dollar tolerance</mat-label>
+                        <span matTextPrefix>$&nbsp;</span>
+                        <input matInput type="number" min="0" step="1" [(ngModel)]="dollar">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Percent tolerance</mat-label>
+                        <input matInput type="number" min="0" step="0.1" [(ngModel)]="percent">
+                        <span matTextSuffix>%</span>
+                    </mat-form-field>
+                </div>
+
+                <button mat-raised-button color="primary" [disabled]="saving" (click)="save()">
+                    @if (saving) {
+                        <mat-spinner diameter="18"></mat-spinner>
+                    } @else {
+                        <mat-icon>save</mat-icon>
+                    }
+                    Save
+                </button>
+            }
+        </mat-card-content>
+    </mat-card>
+</div>

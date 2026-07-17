@@ -5,38 +5,9 @@
 
     <mat-card class="section-card">
         <mat-card-content>
-            @if (properties.length === 0) {
+            @if (workspaceService.properties.length === 0) {
                 <p class="empty-state">Add a property first to upload its documents.</p>
             } @else {
-                <div class="selectors">
-                    <mat-form-field appearance="outline" class="property-select">
-                        <mat-label>Property</mat-label>
-                        <mat-select [(ngModel)]="selectedPropertyId" (selectionChange)="onSelectionChange()">
-                            @for (property of properties; track property.oid) {
-                                <mat-option [value]="property.oid">{{ property.name }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="month-select">
-                        <mat-label>Month</mat-label>
-                        <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onSelectionChange()">
-                            @for (month of months; track month.value) {
-                                <mat-option [value]="month.value">{{ month.label }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="year-select">
-                        <mat-label>Year</mat-label>
-                        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onSelectionChange()">
-                            @for (year of years; track year) {
-                                <mat-option [value]="year">{{ year }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
                 <div class="upload-row">
                     <mat-form-field appearance="outline" class="doctype-select">
                         <mat-label>Document Type</mat-label>
@@ -57,7 +28,7 @@
                         <mat-chip>{{ selectedFile.name }}</mat-chip>
                     }
 
-                    <button mat-raised-button color="primary" [disabled]="!selectedFile || !period || !selectedDocType || uploading" (click)="upload()">
+                    <button mat-raised-button color="primary" [disabled]="!selectedFile || !workspaceService.currentPeriod || !selectedDocType || uploading" (click)="upload()">
                         @if (uploading) {
                             <mat-spinner diameter="18"></mat-spinner>
                         } @else {
@@ -92,16 +63,21 @@
                                     <span class="version-filename">{{ version.originalFilename }}</span>
                                     <span class="version-date">{{ version.uploadedAt | date:'medium' }}</span>
                                 </div>
-                                <button mat-icon-button (click)="download(version)" matTooltip="Download">
-                                    <mat-icon>download</mat-icon>
-                                </button>
+                                <div class="version-actions">
+                                    <a mat-icon-button [routerLink]="['/extraction', version.oid]" matTooltip="AI Extraction">
+                                        <mat-icon>auto_awesome</mat-icon>
+                                    </a>
+                                    <button mat-icon-button (click)="download(version)" matTooltip="Download">
+                                        <mat-icon>download</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         }
                     </div>
                 </mat-expansion-panel>
             }
         </mat-accordion>
-    } @else if (selectedPropertyId && period) {
+    } @else if (workspaceService.currentPropertyId && workspaceService.currentPeriod) {
         <p class="empty-state">No documents uploaded yet for this property and period.</p>
     }
 </div>

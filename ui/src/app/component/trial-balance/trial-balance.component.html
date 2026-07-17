@@ -5,38 +5,9 @@
 
     <mat-card class="section-card">
         <mat-card-content>
-            @if (properties.length === 0) {
+            @if (workspaceService.properties.length === 0) {
                 <p class="empty-state">Add a property first to import its Trial Balance.</p>
             } @else {
-                <div class="selectors">
-                    <mat-form-field appearance="outline" class="property-select">
-                        <mat-label>Property</mat-label>
-                        <mat-select [(ngModel)]="selectedPropertyId" (selectionChange)="onSelectionChange()">
-                            @for (property of properties; track property.oid) {
-                                <mat-option [value]="property.oid">{{ property.name }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="month-select">
-                        <mat-label>Month</mat-label>
-                        <mat-select [(ngModel)]="selectedMonth" (selectionChange)="onSelectionChange()">
-                            @for (month of months; track month.value) {
-                                <mat-option [value]="month.value">{{ month.label }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" class="year-select">
-                        <mat-label>Year</mat-label>
-                        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onSelectionChange()">
-                            @for (year of years; track year) {
-                                <mat-option [value]="year">{{ year }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
                 <div class="upload-row">
                     <input #fileInput type="file" accept=".xlsx,.xls" hidden (change)="onFileSelected($event)">
                     <button mat-stroked-button (click)="fileInput.click()">
@@ -48,7 +19,7 @@
                         <mat-chip>{{ selectedFile.name }}</mat-chip>
                     }
 
-                    <button mat-raised-button color="primary" [disabled]="!selectedFile || !period || uploading" (click)="upload()">
+                    <button mat-raised-button color="primary" [disabled]="!selectedFile || !workspaceService.currentPeriod || uploading" (click)="upload()">
                         @if (uploading) {
                             <mat-spinner diameter="18"></mat-spinner>
                         } @else {
@@ -93,7 +64,7 @@
                 </table>
             </mat-card-content>
         </mat-card>
-    } @else if (selectedPropertyId && period) {
+    } @else if (workspaceService.currentPropertyId && workspaceService.currentPeriod) {
         <p class="empty-state">No Trial Balance imported yet for this property and period.</p>
     }
 </div>

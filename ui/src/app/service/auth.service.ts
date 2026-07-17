@@ -21,6 +21,10 @@ export class AuthService extends BaseService {
         return this._userAuth?.username;
     }
 
+    get currentUserId(): string {
+        return this._userAuth?.oid;
+    }
+
     async resume(): Promise<boolean> {
         const res = await this.authenticate();
         return res.success;
